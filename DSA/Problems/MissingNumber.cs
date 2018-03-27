@@ -16,33 +16,30 @@ namespace DSA.Problems
         /// <output>
         ///     Missing number 2
         /// </output>
+        private const int RepetitionCount = 3;
+        private const string  Input = "11122333";
+        private const char Answer = '2';
+
         [TestMethod]
         public void BruteForce()
         {
-            // Time:  O(n) Must iterate over each character in the passed in string, worst case.
-            // Memory: o(n) Additional memory: counter int, answer char. Constant regardless of input.
+            // Time:  O(n). Must iterate over each character in the passed in string, worst case.
+            // Memory: n. Additional memory: counter int, answer char.
 
-            #region Test I/O
+            // Checking edge cases
+            if (Input == null || Input.Length <= 0) return;
 
-            const int repetitionCount = 3;
-            var input = "11122333";
-            var answer = '2';
             char? output = null;
-
-            #endregion
-
             var currentCharCount = 0;
-            var currentChar = input.First();
+            var currentChar = Input[0];
 
-            // 1 1 1
-            // 
-            foreach (var c in input)
+            foreach (var c in Input)
             {
                 // Count occurences of the incoming characters
                 if (c == currentChar) currentCharCount++;
 
                 // Check the current char's repetition before updating the current char in order to find a match
-                if (currentCharCount < repetitionCount && c != currentChar)
+                if (currentCharCount < RepetitionCount && c != currentChar)
                 {
                     output = currentChar;
                     break;
@@ -57,7 +54,7 @@ namespace DSA.Problems
             }
 
             Assert.IsNotNull(output);
-            Assert.AreEqual(answer, output.Value);
+            Assert.AreEqual(Answer, output.Value);
         }
     }
 }
