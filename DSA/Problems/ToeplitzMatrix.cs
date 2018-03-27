@@ -1,4 +1,4 @@
-﻿namespace DSA
+﻿namespace DSA.Problems
 {
     /// <summary>
     ///     Verify if a given matrix is a Toeplitz matrix.

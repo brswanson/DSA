@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA
+namespace DSA.Problems
 {
     [TestClass]
     public class MissingNumber

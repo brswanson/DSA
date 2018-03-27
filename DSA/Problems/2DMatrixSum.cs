@@ -1,4 +1,4 @@
-﻿namespace DSA
+﻿namespace DSA.Problems
 {
     internal class _2DMatrixSum
     {
