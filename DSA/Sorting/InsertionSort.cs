@@ -11,7 +11,7 @@ namespace DSA.Sorting
             // Memory:  O(1). Sorts in place.
 
             // Checking edge cases
-            if (input.Length <= 1) return;
+            if (input == null || input.Length <= 1) return;
 
             var index = 1;
 
