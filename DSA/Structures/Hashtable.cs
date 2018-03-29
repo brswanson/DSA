@@ -66,6 +66,8 @@ namespace DSA.Structures
             return value.Length;
         }
 
+        public string this[string key] => GetValue(key);
+
         [TestMethod]
         public void TestHashtable()
         {
@@ -73,20 +75,20 @@ namespace DSA.Structures
             var actual = new StringHashtable(input);
 
             // Check contents
-            Assert.AreEqual(actual.GetValue(""), "");
-            Assert.AreEqual(actual.GetValue("1"), "1");
-            Assert.AreEqual(actual.GetValue("22"), "22");
-            Assert.AreEqual(actual.GetValue("333"), "333");
-            Assert.AreEqual(actual.GetValue("4444"), "4444");
-            Assert.AreEqual(actual.GetValue("55555"), "55555");
+            Assert.AreEqual(actual[""], "");
+            Assert.AreEqual(actual["1"], "1");
+            Assert.AreEqual(actual["22"], "22");
+            Assert.AreEqual(actual["333"], "333");
+            Assert.AreEqual(actual["4444"], "4444");
+            Assert.AreEqual(actual["55555"], "55555");
 
             // Force size increase
             actual.AddValue("666666");
-            Assert.AreEqual(actual.GetValue("666666"), "666666");
-            
+            Assert.AreEqual(actual["666666"], "666666");
+
             // Force chaining
             actual.AddValue("1");
-            Assert.AreEqual(actual.GetValue("1"), "1");
+            Assert.AreEqual(actual["1"], "1");
         }
     }
 }
