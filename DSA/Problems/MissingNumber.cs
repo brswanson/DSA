@@ -1,4 +1,3 @@
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems
@@ -16,30 +15,26 @@ namespace DSA.Problems
         /// <output>
         ///     Missing number 2
         /// </output>
-        private const int RepetitionCount = 3;
-        private const string  Input = "11122333";
-        private const char Answer = '2';
-
-        [TestMethod]
-        public void BruteForce()
+        public static char? BruteForce(int repetitionCount, string input)
         {
-            // Time:  O(n). Must iterate over each character in the passed in string, worst case.
-            // Memory: n. Additional memory: counter int, answer char.
+            // Time:    O(n). Must iterate over each character in the passed in string, worst case.
+            // Memory:  O(1).
 
             // Checking edge cases
-            if (Input == null || Input.Length <= 0) return;
+            if (string.IsNullOrEmpty(input)) return null;
+            if (repetitionCount <= 0) return null;
 
             char? output = null;
             var currentCharCount = 0;
-            var currentChar = Input[0];
+            var currentChar = input[0];
 
-            foreach (var c in Input)
+            foreach (var c in input)
             {
                 // Count occurences of the incoming characters
                 if (c == currentChar) currentCharCount++;
 
                 // Check the current char's repetition before updating the current char in order to find a match
-                if (currentCharCount < RepetitionCount && c != currentChar)
+                if (currentCharCount < repetitionCount && c != currentChar)
                 {
                     output = currentChar;
                     break;
@@ -53,8 +48,19 @@ namespace DSA.Problems
                 }
             }
 
-            Assert.IsNotNull(output);
-            Assert.AreEqual(Answer, output.Value);
+            return output;
+        }
+
+        [TestMethod]
+        public void TestBruteForce()
+        {
+            const int repetitionCount = 3;
+            const string input = "11122333";
+            const char answer = '2';
+
+            var testAnswer = BruteForce(repetitionCount, input);
+
+            Assert.AreEqual(answer, testAnswer);
         }
     }
 }
