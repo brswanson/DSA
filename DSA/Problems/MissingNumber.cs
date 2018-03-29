@@ -52,15 +52,15 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void TestBruteForce()
+        public void TestMissingNumberBruteForce()
         {
             const int repetitionCount = 3;
             const string input = "11122333";
-            const char answer = '2';
+            const char expected = '2';
 
-            var testAnswer = BruteForce(repetitionCount, input);
+            var actual = BruteForce(repetitionCount, input);
 
-            Assert.AreEqual(answer, testAnswer);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
