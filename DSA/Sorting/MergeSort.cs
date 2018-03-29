@@ -8,8 +8,9 @@ namespace DSA.Sorting
     {
         public static int[] SortIntegerArrayAscending(int[] input)
         {
-            // Time: O(nlogn).  Iterates over each element in the array (n). Sorts the array elements usings swaps (logn)
-            // Memory: 2n => n. Passes n, then n/2, n/4, etc ... In each subsequent call. This totals to at most 2n which reduces down to n.
+            // Time:    O(nlogn).   Arrays are halved on each recursive call, leaving logn total merges. Each merge takes n time to sort the data.
+            // Memory:  O(n).       New arrays are created and their memory is allocated at each recursive step.
+            //                      This additional memory reduces down to linear space in big O notation though.
 
             // Checking edge cases
             if (input == null) return null;

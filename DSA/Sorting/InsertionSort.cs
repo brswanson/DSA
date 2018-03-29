@@ -7,8 +7,8 @@ namespace DSA.Sorting
     {
         public static void SortIntegerArrayAscending(int[] input)
         {
-            // Time:    O(n2). Iterates over each integer in the array at least once (n). May also iterate over each integer in the array once for each integer in the array (n).
-            // Memory:  O(1). Sorts in place.
+            // Time:    O(n2).  Iterates over each integer in the array at least once (n). May also iterate over each integer in the array once for each integer in the array (n).
+            // Memory:  O(1).   Sorts in place.
 
             // Checking edge cases
             if (input == null || input.Length <= 1) return;

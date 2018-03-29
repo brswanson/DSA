@@ -17,8 +17,8 @@ namespace DSA.Problems
         /// </output>
         public static char? BruteForce(int repetitionCount, string input)
         {
-            // Time:    O(n). Must iterate over each character in the passed in string, worst case.
-            // Memory:  O(1).
+            // Time:    O(n).   Must iterate over each character in the passed in string, worst case.
+            // Memory:  O(1).   A constant amount of memory is used to keep track of the current character, its count, and to return the output character.
 
             // Checking edge cases
             if (string.IsNullOrEmpty(input)) return null;
