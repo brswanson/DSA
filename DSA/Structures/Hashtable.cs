@@ -10,7 +10,7 @@ namespace DSA.Structures
 
         public StringHashtable()
         {
-            _valueSpace = new LinkedList<string>[1024];
+            _valueSpace = new LinkedList<string>[0];
         }
 
         public StringHashtable(string[] input)
@@ -25,18 +25,18 @@ namespace DSA.Structures
 
         private void AddValue(string value)
         {
-            var hashedKey = HashingFunction(value);
+            var hashedKey = HashFunction(value);
 
             // If the key lies outside the space of the table, we increase it
             if (hashedKey >= _valueSpace.Length) IncreaseSpace(hashedKey);
 
             if (_valueSpace[hashedKey] == null)
             {
-                _valueSpace[HashingFunction(value)] = new LinkedList<string>(new[] { value });
+                _valueSpace[HashFunction(value)] = new LinkedList<string>(new[] { value });
             }
             else
             {
-                _valueSpace[HashingFunction(value)].AddLast(value);
+                _valueSpace[HashFunction(value)].AddLast(value);
             }
         }
 
@@ -51,7 +51,7 @@ namespace DSA.Structures
 
         private string GetValue(string value)
         {
-            var key = HashingFunction(value);
+            var key = HashFunction(value);
 
             // If only one value exists for this key, return the value in constant time
             if (_valueSpace[key].Count == 1) return _valueSpace[key].First.Value;
@@ -61,7 +61,7 @@ namespace DSA.Structures
         }
 
         // A very poor hashing function. Uses the length of the passed in string.
-        private static int HashingFunction(string value)
+        private static int HashFunction(string value)
         {
             return value.Length;
         }
@@ -71,8 +71,14 @@ namespace DSA.Structures
         [TestMethod]
         public void TestHashtable()
         {
+            // Check default constructor
+            var actual = new StringHashtable();
+            actual.AddValue("1");
+            Assert.AreEqual(actual["1"], "1");
+
+            // Re-init using var constructor
             var input = new[] { "", "1", "22", "333", "4444", "55555" };
-            var actual = new StringHashtable(input);
+            actual = new StringHashtable(input);
 
             // Check contents
             Assert.AreEqual(actual[""], "");
