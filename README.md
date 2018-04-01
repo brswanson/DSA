@@ -1,2 +1,2 @@
-# DSA
-Data Structures &amp; Algorithms practice
+# Data Structures & Algorithms
+Just practicing the above.
