@@ -36,7 +36,7 @@ namespace DSA.Problems
             // Set left and right iterators to the bounds of the array
             var leftIterator = 0;
             var rightIterator = input.Length - 1;
-            
+
             // Init maxes to left and right bounds
             var leftMax = input[leftIterator];
             var rightMax = input[rightIterator];
@@ -56,18 +56,18 @@ namespace DSA.Problems
                     rightIterator--;
 
                     // Update right max value if needed
-                    rightMax = UpdateMax(rightMax, input[rightIterator]);
+                    UpdateMax(ref rightMax, input[rightIterator]);
                 }
                 else
                 {
                     // Add leftmost rainwater
                     output += CalculateRainwater(leftMax, rightMax, input[leftIterator]);
-                    
+
                     // Pull toward the right
                     leftIterator++;
 
                     // Update left max value if needed
-                    leftMax = UpdateMax(leftMax, input[leftIterator]);
+                    UpdateMax(ref leftMax, input[leftIterator]);
                 }
             }
 
@@ -79,9 +79,9 @@ namespace DSA.Problems
             return Math.Max(Math.Min(leftMax, rightMax) - elevantion, 0);
         }
 
-        private static int UpdateMax(int oldValue, int newValue)
+        private static void UpdateMax(ref int maxValue, int newValue)
         {
-            return Math.Max(oldValue, newValue);
+            maxValue = Math.Max(maxValue, newValue);
         }
 
         [TestMethod]
