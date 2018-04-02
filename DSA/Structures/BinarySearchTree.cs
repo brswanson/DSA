@@ -23,7 +23,7 @@ namespace DSA.Structures
             }
         }
 
-        public void AddRecursively(int value)
+        private void AddRecursively(int value)
         {
             // Start the tree if it doesn't exist
             if (TreeIsEmpty)
@@ -36,7 +36,7 @@ namespace DSA.Structures
             RecursiveInsertNode(_root, value);
         }
 
-        public void AddIteratively(int value)
+        private void AddIteratively(int value)
         {
             // Start the tree if it doesn't exist
             if (TreeIsEmpty)
@@ -94,11 +94,14 @@ namespace DSA.Structures
             }
         }
 
-        public BinaryTreeNode<int> IterativeSearch(int value)
+        public BinaryTreeNode<int> Search(int value, bool recursive = false)
         {
-            if (TreeIsEmpty) return null;
+            return recursive ? RecursiveSearch(value) : IterativeSearch(value);
+        }
 
-            return IterativeSearch(_root, value);
+        private BinaryTreeNode<int> IterativeSearch(int value)
+        {
+            return TreeIsEmpty ? null : IterativeSearch(_root, value);
         }
 
         private static BinaryTreeNode<int> IterativeSearch(BinaryTreeNode<int> head, int value)
@@ -125,11 +128,9 @@ namespace DSA.Structures
             }
         }
 
-        public BinaryTreeNode<int> RecursiveSearch(int value)
+        private BinaryTreeNode<int> RecursiveSearch(int value)
         {
-            if (TreeIsEmpty) return null;
-
-            return RecursiveSearch(_root, value);
+            return TreeIsEmpty ? null : RecursiveSearch(_root, value);
         }
 
         private static BinaryTreeNode<int> RecursiveSearch(BinaryTreeNode<int> head, int value)
@@ -154,22 +155,22 @@ namespace DSA.Structures
         [TestMethod]
         public void TestBinarySearchTree()
         {
-            int[] inputIterative = {7, 9, 12, 10};
-            int[] inputRecursive = {3, 1, 4, 8};
+            int[] inputIterative = { 7, 9, 12, 10 };
+            int[] inputRecursive = { 3, 1, 4, 8 };
             var tree = new BinarySearchTree();
 
-            tree.Add(inputIterative, false);
+            tree.Add(inputIterative);
             tree.Add(inputRecursive, true);
 
             // Test iterative search
-            Assert.AreEqual(tree.IterativeSearch(10).Value, 10);
+            Assert.AreEqual(tree.Search(10).Value, 10);
 
             // Test recursive search
-            Assert.AreEqual(tree.RecursiveSearch(8).Value, 8);
+            Assert.AreEqual(tree.Search(8, true).Value, 8);
 
             // Test null
-            Assert.IsNull(tree.IterativeSearch(99));
-            Assert.IsNull(tree.RecursiveSearch(99));
+            Assert.IsNull(tree.Search(99));
+            Assert.IsNull(tree.Search(99, true));
         }
     }
 
