@@ -96,12 +96,9 @@ namespace DSA.Structures
 
         public BinaryTreeNode<int> Search(int value, bool recursive = false)
         {
-            return recursive ? RecursiveSearch(value) : IterativeSearch(value);
-        }
+            if (TreeIsEmpty) return null;
 
-        private BinaryTreeNode<int> IterativeSearch(int value)
-        {
-            return TreeIsEmpty ? null : IterativeSearch(_root, value);
+            return recursive ? RecursiveSearch(_root, value) : IterativeSearch(_root, value);
         }
 
         private static BinaryTreeNode<int> IterativeSearch(BinaryTreeNode<int> head, int value)
@@ -126,11 +123,6 @@ namespace DSA.Structures
                 // Item does not exist
                 return null;
             }
-        }
-
-        private BinaryTreeNode<int> RecursiveSearch(int value)
-        {
-            return TreeIsEmpty ? null : RecursiveSearch(_root, value);
         }
 
         private static BinaryTreeNode<int> RecursiveSearch(BinaryTreeNode<int> head, int value)
