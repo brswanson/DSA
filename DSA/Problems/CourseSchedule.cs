@@ -33,14 +33,14 @@ namespace DSA.Problems
 
             var adjMatrix = new bool[numCourses, numCourses];
 
-            for (var i = 0; i < prerequisites.Length - 1; i++)
+            // Note: Incomplete. The adj matrix has been created, but the search still needs to exist.
+            //       Also may want to keep track of incoming edges.
+            for (var i = 0; i < prerequisites.GetLength(0) - 1; i++)
             {
                 var edgeA = prerequisites[i, 0];
                 var edgeB = prerequisites[i, 1];
 
                 adjMatrix[edgeA, edgeB] = true;
-
-                if (adjMatrix[edgeB, edgeA]) return false;
             }
 
             return true;
@@ -49,19 +49,10 @@ namespace DSA.Problems
         [TestMethod]
         public void TestCourseSchedule()
         {
-            var input = new int[4, 2];
-            input[0, 0] = 1;
-            input[0, 1] = 0;
-            input[1, 0] = 1;
-            input[1, 1] = 2;
-            input[2, 0] = 2;
-            input[2, 1] = 3;
-            input[3, 0] = 0;
-            input[3, 1] = 1;
-            
+            var input = new[,] { { 1, 0 }, { 0, 1 } };
             const bool expected = false;
 
-            var actual = AdjacencyMatrix(4, input);
+            var actual = AdjacencyMatrix(2, input);
 
             Assert.AreEqual(expected, actual);
         }
