@@ -24,31 +24,33 @@ namespace DSA.Problems
         ///     To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1.
         ///     So it is impossible.
         /// </notes>
-        public bool AdjacencyMatrix(int numCourses, List<int[]> prerequisites)
+        public bool DFS(int numCourses, List<int[]> prerequisites)
         {
-            // Time:    O(n).   One pass over each edge.
-            // Memory:  O(n^2). One value for each edge combination. Edges are from 0 to n, so the matrix must be nxn in size.
+            // Time:    O(v + n).   One pass over each vertex and node.
+            // Memory:  O(v + n).   Extra memory for each vertex and node.
 
             // Checking edge cases
             if (numCourses <= 0 || prerequisites.Count <= 0) return true;
 
-            const int courseIndex = 0;
-            const int prereqIndex = 1;
-            var adjMatrix = new bool[numCourses, numCourses];
-
-            for (var i = 0; i < prerequisites.Count; i++)
-            {
-                var edgeA = prerequisites[i][courseIndex];
-                var edgeB = prerequisites[i][prereqIndex];
-
-                adjMatrix[edgeA, edgeB] = true;
-
-                // If the opposite incoming/outgoing edge also exists, we know we have a prereq loop
-                if (adjMatrix[edgeB, edgeA]) return false;
-            }
+            //TODO:
+            // Build a strucutre for the graph so it can be search
+            // Search each node DFS. If false, return false.
 
             return true;
         }
+
+        // TODO:
+        /*
+            private bool DFS(...)
+            Return true if perm[i] is true;
+            Return false if temp[i] for node is true;
+
+            Set temp[i] = true;
+            Iterate over all children for the node; return false if false.
+            
+            perm[i] = true;
+            temp[i] = false;
+         */
 
         [TestMethod]
         public void TestCourseSchedule()
@@ -59,7 +61,7 @@ namespace DSA.Problems
 
             const bool expected = false;
 
-            var actual = AdjacencyMatrix(input.Count, input);
+            var actual = DFS(input.Count, input);
 
             Assert.AreEqual(expected, actual);
         }
