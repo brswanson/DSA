@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,9 +20,10 @@ namespace DSA.Structures
         private static BTreeNode SearchNodesRecursively(int? value, BTreeNode node)
         {
             // Check the children of the node
-            if (value < node.Min && node.Left != null) return SearchNodesRecursively(value, node.Left);
-            if (value > node.Max && node.Right != null) return SearchNodesRecursively(value, node.Right);
-            if (value >= node.Min && value <= node.Max && node.Middle != null) return SearchNodesRecursively(value, node.Middle);
+            // TODO: Refactor to use key indexes instead of hard coding based on three nodes
+            if (value < node.Min && node.Children[0] != null) return SearchNodesRecursively(value, node.Children[0]);
+            if (value >= node.Min && value <= node.Max && node.Children[1] != null) return SearchNodesRecursively(value, node.Children[1]);
+            if (value > node.Max && node.Children[2] != null) return SearchNodesRecursively(value, node.Children[2]);
 
             return node;
         }
@@ -31,23 +31,24 @@ namespace DSA.Structures
         private static BTreeNode SearchNodesIteratively(int? value, BTreeNode node)
         {
             // Check the children of the node
+            // TODO: Refactor to use key indexes instead of hard coding based on three nodes
             while (true)
             {
-                if (value < node.Min && node.Left != null)
+                if (value < node.Min && node.Children[0] != null)
                 {
-                    node = node.Left;
+                    node = node.Children[0];
                     continue;
                 }
 
-                if (value > node.Max && node.Right != null)
+                if (value >= node.Min && value <= node.Max && node.Children[1] != null)
                 {
-                    node = node.Right;
+                    node = node.Children[1];
                     continue;
                 }
 
-                if (value >= node.Min && value <= node.Max && node.Middle != null)
+                if (value > node.Max && node.Children[2] != null)
                 {
-                    node = node.Middle;
+                    node = node.Children[2];
                     continue;
                 }
 
@@ -66,7 +67,7 @@ namespace DSA.Structures
             return null;
         }
 
-        public void AddValue(int value)
+        public void AddValue(int? value, bool recursive = false)
         {
             if (_root == null)
             {
@@ -74,10 +75,12 @@ namespace DSA.Structures
                 return;
             }
 
-            AddValue(value, _root);
+            var node = recursive ? SearchNodesRecursively(value, _root) : SearchNodesIteratively(value, _root);
+
+            AddValue(value, node);
         }
 
-        public void AddValue(int value, BTreeNode node)
+        public void AddValue(int? value, BTreeNode node)
         {
             if (node.IsFull)
             {
@@ -88,9 +91,15 @@ namespace DSA.Structures
             node.AddValue(value);
         }
 
-        private void Split(int value, BTreeNode node)
+        private void Split(int? value, BTreeNode node)
         {
-            // TODO: Implement splitting the node
+            /* TODO: Handle case where node is root/has no parent
+
+                TODO: Distribute child nodes
+                Refactor such that there is no concept of Left, Middle, Right; just array size + 1 children.
+                Then distribute keys/children such that they balance out
+             */
+
             return;
         }
 
@@ -119,40 +128,29 @@ namespace DSA.Structures
 
     public class BTreeNode
     {
-        public BTreeNode Left;
-        public BTreeNode Middle;
-        public BTreeNode Right;
+        public BTreeNode Parent;
+        public BTreeNode[] Children;
         public int?[] Values;
 
-        public BTreeNode(int value)
+        public BTreeNode(int? value, int nodes = 3)
         {
+            if (nodes < 3) nodes = 3;
+
+            Children = new BTreeNode[nodes];
+            Values = new int?[nodes - 1];
+
             AddValue(value);
         }
 
-        public bool HasChild => Left != null || Middle != null || Right != null;
-        public bool IsFull => Count >= Values.Length;
+        public bool IsFull => Values?[Values.Length - 1] != null;
 
         // Note: Could set min, max, and count whenever the Values array changes to improve performance
-        public int Count => Values.Count(v => v.HasValue);
-        public int? Min => Values.Min();
-        public int? Max => Values.Max();
+        public int Count => Values?.Count(v => v.HasValue) ?? 0;
+        public int? Min => Values?.Min();
+        public int? Max => Values?.Max();
 
-        public int? Median(int value)
+        public void AddValue(int? value)
         {
-            var medianArraySize = Values.Length + 1;
-            var medianArray = new int?[medianArraySize];
-            Values.CopyTo(medianArray, 0);
-
-            medianArray[Values.Length + 1] = value;
-
-            Array.Sort(medianArray);
-
-            return medianArray[medianArraySize / 2];
-        }
-
-        public void AddValue(int value, int maxValues = 2)
-        {
-            if (Values == null) Values = new int?[maxValues];
             if (IsFull) return;
 
             Values[Count] = value;
