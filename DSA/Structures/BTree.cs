@@ -11,25 +11,24 @@ namespace DSA.Structures
 
         public int? Search(int? value, bool recursive = false)
         {
-            return recursive
-                ? SearchNodeRecursively(value, _root)
-                : SearchNodeIterative(value, _root);
-        }
+            if (_root == null) return null;
 
-        private static int? SearchNodeRecursively(int? value, BTreeNode node)
-        {
-            // Check the children of the node
-            if (value < node.Min && node.Left != null) return SearchNodeRecursively(value, node.Left);
-            if (value > node.Max && node.Right != null) return SearchNodeRecursively(value, node.Right);
-            if (value > node.Min && value < node.Max && node.Middle != null) return SearchNodeRecursively(value, node.Middle);
-
-            // Check if the current node contains the value
-            for (var i = 0; i < node.Count; i++) if (node.Values[i] == value) return value;
+            var node = recursive ? SearchNodesRecursively(value, _root) : SearchNodesIteratively(value, _root);
 
             return SearchNodeValues(value, node);
         }
 
-        private static int? SearchNodeIterative(int? value, BTreeNode node)
+        private static BTreeNode SearchNodesRecursively(int? value, BTreeNode node)
+        {
+            // Check the children of the node
+            if (value < node.Min && node.Left != null) return SearchNodesRecursively(value, node.Left);
+            if (value > node.Max && node.Right != null) return SearchNodesRecursively(value, node.Right);
+            if (value >= node.Min && value <= node.Max && node.Middle != null) return SearchNodesRecursively(value, node.Middle);
+
+            return node;
+        }
+
+        private static BTreeNode SearchNodesIteratively(int? value, BTreeNode node)
         {
             // Check the children of the node
             while (true)
@@ -46,7 +45,7 @@ namespace DSA.Structures
                     continue;
                 }
 
-                if (value > node.Min && value < node.Max && node.Middle != null)
+                if (value >= node.Min && value <= node.Max && node.Middle != null)
                 {
                     node = node.Middle;
                     continue;
@@ -55,11 +54,13 @@ namespace DSA.Structures
                 break;
             }
 
-            return SearchNodeValues(value, node);
+            return node;
         }
 
         private static int? SearchNodeValues(int? value, BTreeNode node)
         {
+            if (node == null) return null;
+
             for (var i = 0; i < node.Count; i++) if (node.Values[i] == value) return value;
 
             return null;
@@ -97,12 +98,17 @@ namespace DSA.Structures
         public void TestBTree()
         {
             var actual = new BTree();
+
+            // Search before adding elements
+            Assert.AreEqual(null, actual.Search(1));
+
             actual.AddValue(1);
             actual.AddValue(2);
             actual.AddValue(3);
             actual.AddValue(4);
             actual.AddValue(5);
 
+            // Search after adding elements
             Assert.AreEqual(1, actual.Search(1));
             Assert.AreEqual(2, actual.Search(2));
             Assert.AreEqual(3, actual.Search(3));
