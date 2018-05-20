@@ -6,13 +6,9 @@ namespace DSA.Problems
 {
     public class LruCache<T>
     {
-        private readonly LinkedList<T> _recentNodes;
         private readonly HashSet<T> _cachedValues;
+        private readonly LinkedList<T> _recentNodes;
         private readonly int _maxCacheCount;
-
-        // Nodes and Values should always be in sync, but using Max may prevent an overflow if they ever are
-        public int Count => Math.Max(_recentNodes.Count, _cachedValues.Count);
-        public bool IsCached(T value) { return _cachedValues.Contains(value); }
 
         public LruCache(int maxCacheCount = 1000)
         {
@@ -20,6 +16,10 @@ namespace DSA.Problems
             _cachedValues = new HashSet<T>();
             _maxCacheCount = maxCacheCount;
         }
+
+        // Nodes and Values should always be in sync, but using Max may prevent an overflow if they ever are
+        public int Count => Math.Max(_recentNodes.Count, _cachedValues.Count);
+        public bool IsCached(T value) { return _cachedValues.Contains(value); }
 
         private void Add(T value)
         {
