@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems
 {
     public class LruCache<T>
     {
-        private readonly HashSet<T> _cachedValues;
-        private readonly LinkedList<T> _recentNodes;
+        private readonly HashSet<T> _cachedValuesSet;
+        private readonly LinkedList<T> _recentNodesList;
         private readonly int _maxCacheCount;
 
         public LruCache(int maxCacheCount = 1000)
         {
-            _recentNodes = new LinkedList<T>();
-            _cachedValues = new HashSet<T>();
+            _recentNodesList = new LinkedList<T>();
+            _cachedValuesSet = new HashSet<T>();
             _maxCacheCount = maxCacheCount;
         }
 
-        // Nodes and Values should always be in sync, but using Max may prevent an overflow if they ever are
-        public int Count => Math.Max(_recentNodes.Count, _cachedValues.Count);
-        private bool IsEmpty => _recentNodes.Count <= 0;
-        public bool IsCached(T value) { return _cachedValues.Contains(value); }
+        public int Count => _recentNodesList.Count;
+        private bool IsEmpty => _recentNodesList.Count <= 0;
+        public bool IsCached(T value) { return _cachedValuesSet.Contains(value); }
 
         private void Add(T value)
         {
             // Performance is the same for .Contains() and .Add()
-            ReOrderNodes(_cachedValues.Add(value), value);
+            ReOrderNodes(_cachedValuesSet.Add(value), value);
         }
 
         public T Get(T value)
@@ -39,16 +37,16 @@ namespace DSA.Problems
         {
             if (Count > _maxCacheCount) RemoveLeastRecentlyUsedItem();
 
-            if (!isNewItem) _recentNodes.Remove(value);
-            _recentNodes.AddFirst(value);
+            if (!isNewItem) _recentNodesList.Remove(value);
+            _recentNodesList.AddFirst(value);
         }
 
         private void RemoveLeastRecentlyUsedItem()
         {
             if (IsEmpty) return;
 
-            _cachedValues.Remove(_recentNodes.Last.Value);
-            _recentNodes.RemoveLast();
+            _cachedValuesSet.Remove(_recentNodesList.Last.Value);
+            _recentNodesList.RemoveLast();
         }
     }
 
