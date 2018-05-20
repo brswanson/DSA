@@ -19,6 +19,7 @@ namespace DSA.Problems
 
         // Nodes and Values should always be in sync, but using Max may prevent an overflow if they ever are
         public int Count => Math.Max(_recentNodes.Count, _cachedValues.Count);
+        private bool IsEmpty => _recentNodes.Count <= 0;
         public bool IsCached(T value) { return _cachedValues.Contains(value); }
 
         private void Add(T value)
@@ -36,7 +37,7 @@ namespace DSA.Problems
 
         private void ReOrderNodes(bool isNewItem, T value)
         {
-            if (_cachedValues.Count > _maxCacheCount) RemoveLeastRecentlyUsedItem();
+            if (Count > _maxCacheCount) RemoveLeastRecentlyUsedItem();
 
             if (!isNewItem) _recentNodes.Remove(value);
             _recentNodes.AddFirst(value);
@@ -44,7 +45,7 @@ namespace DSA.Problems
 
         private void RemoveLeastRecentlyUsedItem()
         {
-            if (_recentNodes.Count <= 0) return;
+            if (IsEmpty) return;
 
             _cachedValues.Remove(_recentNodes.Last.Value);
             _recentNodes.RemoveLast();
