@@ -3,12 +3,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems
 {
+    // Get/Add/Delete Time: O(1).   Accessing a value from, adding to, or removing from the HashSet is constant regardless of overall input size. 
+    //                              Additional time may be taken to increase the size of the HashSet until the maximum is reached.
+    //                              Reordering nodes in order to drop the LRU item is constant.
+    // Memory:  O(2n) => O(n).      Scales linearly with incoming data.
     public class LruCache<T>
     {
         private readonly HashSet<T> _cachedValuesSet;
         private readonly LinkedList<T> _recentNodesList;
         private readonly int _maxCacheCount;
-
+        // Note: No edge case check for maximum allocation to the value table or node list
         public LruCache(int maxCacheCount = 1000)
         {
             _recentNodesList = new LinkedList<T>();
