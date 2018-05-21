@@ -1,6 +1,6 @@
 ﻿namespace DSA.Problems
 {
-    internal class _2DMatrixSum
+    public class _2DMatrixSum
     {
         /// <summary>
         ///     Given a 2D matrix M X N, support two operations:

@@ -1,6 +1,6 @@
 ﻿namespace DSA.Problems
 {
-    internal class HtmlTree
+    public class HtmlTree
     {
         /// <summary>
         ///     Given a tree representation of an HTML parsed output, wherein every block is a node in the tree, find if two HTML docs contain the same text.

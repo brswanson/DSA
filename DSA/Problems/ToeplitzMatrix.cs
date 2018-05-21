@@ -21,7 +21,7 @@
     /// <notes>
     ///     In linear algebra, a Toeplitz matrix is a matrix in which each descending diagonal from left to right is constant.
     /// </notes>
-    internal class ToeplitzMatrix
+    public class ToeplitzMatrix
     {
     }
 }
