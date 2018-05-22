@@ -3,10 +3,11 @@
     public class BinaryTreePathSum
     {
         /// <summary>
-        ///     Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+        ///     Given a binary tree node and an integer, find the shortest path to reach the sum within the tree, if it exists.
+        ///     Mutation: As above, but all node values are positive integers.
         /// </summary>
         /// <input>
-        ///     TreeNode node, int 10
+        ///     TreeNode node, int sum
         /// </input>
         /// <output>
         ///     Collection of node values which form the path to the sum or null if none exists
