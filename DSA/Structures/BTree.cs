@@ -104,7 +104,7 @@ namespace DSA.Structures
         }
 
         [TestMethod]
-        public void TestBTree()
+        public void BTreeSearch()
         {
             var actual = new BTree();
 

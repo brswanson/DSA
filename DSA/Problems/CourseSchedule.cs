@@ -53,13 +53,21 @@ namespace DSA.Problems
          */
 
         [TestMethod]
-        public void TestCourseSchedule()
+        public void CourseScheduleDirectedGraph()
         {
-            var input = new List<int[]>();
-            input.Add(new[] { 1, 0 });
-            input.Add(new[] { 0, 1 });
-
+            var input = new List<int[]> { new[] { 1, 0 }, new[] { 0, 1 } };
             const bool expected = false;
+
+            var actual = DFS(input.Count, input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CourseScheduleUndirectedGraph()
+        {
+            var input = new List<int[]> { new[] { 0, 1 }, new[] { 1, 2 } };
+            const bool expected = true;
 
             var actual = DFS(input.Count, input);
 

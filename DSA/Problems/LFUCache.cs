@@ -91,7 +91,7 @@ namespace DSA.Problems
     public class TestLfuCache
     {
         [TestMethod]
-        public void Test()
+        public void LfuCache()
         {
             var lfuCache = new LfuCache<int>(5);
 

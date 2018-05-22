@@ -58,7 +58,7 @@ namespace DSA.Problems
     public class TestLruCache
     {
         [TestMethod]
-        public void Test()
+        public void LruCache()
         {
             var lruCache = new LruCache<int>(5);
 
