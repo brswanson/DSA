@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DSA.Structures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,18 +19,45 @@ namespace DSA.Problems
         /// </output>
         public static List<int> Algorithm(BinaryTreeNode<int> node, int sum)
         {
-            // Time: O(n).      Linear, where n is the number of input nodes. Each node is read once to find the optimal solution.
+            // Time: O(n).      Linear, where n is the number of input nodes. Each node is read once to find all solutions, then the shortest one is picked.
             //                  Could shortcut some routes when a solution has been found, but this won't affect big o time.
-            // Memory: O(n).    Linear, where n is the number of input nodes. The number of items in the optimal path may equal the number of incoming nodes.
+            //                  Some additional time is taken to sort the solutions by count, but count is a property of List so it should be logn worst case.
+            // Memory: O(n).    Linear, where n is the number of input nodes. Since the route is needed, copies of the nodes are made.
+            //                  However, the algorithm takes the first (and thus shortest) path it can find from the Left and Right children of root.
+            //                  Because of this, worst case scenario it will copy all nodes once.
 
             // Store valid solutions by their route length. Overwriting existing values is fine, since their length is the only value we care about.
             // Use the shortest route length value to get the route itself from the dict.
-            Dictionary<int, List<int>> routeLengthDict = new Dictionary<int, List<int>>();
-            int shortestRouteLength = int.MinValue;
+            if (node == null) return null;
 
-            // TODO: Exhaustively search the tree. Record all valid solutions found.
+            var solutionList = new List<List<int>>();
 
-            return routeLengthDict.ContainsKey(shortestRouteLength) ? routeLengthDict[shortestRouteLength] : null;
+            DepthFirstSearch(node, sum, new List<int>(), solutionList);
+
+            // Return the shortest list, if it exists
+            return solutionList.OrderBy(c => c.Count).FirstOrDefault();
+        }
+
+        private static void DepthFirstSearch(BinaryTreeNode<int> root, int sum, List<int> route, ICollection<List<int>> solutionList)
+        {
+            if (root == null) return;
+
+            route.Add(root.Value);
+
+            if (sum == root.Value)
+            {
+                // Add the solution and break recursion. Length of the route can only become longer
+                solutionList.Add(new List<int>(route));
+                // Return to the root node
+                route.RemoveRange(1, route.Count - 1);
+                return;
+            }
+
+            DepthFirstSearch(root.Left, sum - root.Value, route, solutionList);
+            DepthFirstSearch(root.Right, sum - root.Value, route, solutionList);
+
+            // Return to the root node
+            route.RemoveRange(1, route.Count - 1);
         }
     }
 
@@ -44,6 +71,7 @@ namespace DSA.Problems
             Assert.IsNull(BinaryTreePathSum.Algorithm(null, 1));
         }
 
+        // TODO: Currently fails this test. Should protect the alg from int overflows
         [TestMethod]
         public void BinaryTreePathSumIntBoundaries()
         {
@@ -92,13 +120,14 @@ namespace DSA.Problems
             // [Test a set which contains an optimal and sub-optimal solution]
             /*  Goal: 10. Root, left, left, for a total of 3 steps. Root, right, for a total of 2 steps.
              *      1
-             *    1   9
-             *  8
+             *    1   10
+             *  8  1
              */
-            var nodeWithSubOptimalSolution = new BinaryTreeNode<int>(1) { Left = new BinaryTreeNode<int>(1), Right = new BinaryTreeNode<int>(9) };
-            nodeWithSubOptimalSolution.Left.Left = new BinaryTreeNode<int>(1) { Left = new BinaryTreeNode<int>(8) };
+            var nodeWithSubOptimalSolution = new BinaryTreeNode<int>(1) { Left = new BinaryTreeNode<int>(1), Right = new BinaryTreeNode<int>(10) };
+            nodeWithSubOptimalSolution.Left.Left = new BinaryTreeNode<int>(8);
+            nodeWithSubOptimalSolution.Left.Right = new BinaryTreeNode<int>(1);
 
-            var subOptimalSolutionResult = BinaryTreePathSum.Algorithm(nodeWithSubOptimalSolution, 2);
+            var subOptimalSolutionResult = BinaryTreePathSum.Algorithm(nodeWithSubOptimalSolution, 11);
             Assert.IsNotNull(subOptimalSolutionResult);
             Assert.AreEqual(2, subOptimalSolutionResult.Count);
         }
