@@ -65,12 +65,35 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BruteForce()
+        public void BruteForcePositive()
         {
             var testA = "abc#d";
             var testB = "abd";
 
             Assert.IsTrue(BackspaceStringCompare.BruteForce(testA, testB));
+
+            var testAA = "a########bc###";
+            var testBB = "abc###";
+
+            Assert.IsTrue(BackspaceStringCompare.BruteForce(testAA, testBB));
+        }
+
+        [TestMethod]
+        public void BruteForcePositiveBackspaceString()
+        {
+            var testA = "a########bc###";
+            var testB = "a#b#c#";
+
+            Assert.IsTrue(BackspaceStringCompare.BruteForce(testA, testB));
+        }
+
+        [TestMethod]
+        public void BruteForceNegative()
+        {
+            var testA = "abcd";
+            var testB = "abc";
+
+            Assert.IsFalse(BackspaceStringCompare.BruteForce(testA, testB));
         }
     }
 }
