@@ -4,11 +4,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems
 {
+    /// <summary>
+    ///     Given an array of integers, find the majority element.
+    ///     The majority element is the number which occurs at least n/2 times in the array.
+    ///     Return "NO Majority Element" if no solution exists. Otherwise, return the number.
+    /// </summary>
+    /// <input>
+    ///     [1,1,1,2,3]
+    /// </input>
+    /// <output>
+    ///     "1"
+    /// </output>
     public class MajorityElement
     {
         private const string NoSolutionMessage = "NO Majority Element";
-
-        // Where n is the number of elements in the input array 'numbers'.
         // Time:    O(n). Linear. Worst case, it will iterate over all numbers in the array to find the majority value.
         //                If the numbers are ordered favorably, it may finish faster, but this can't be relied on.
         // Memory:  O(n). Linear. Contains at most one entry in the dictionary for each value in the incoming array.
