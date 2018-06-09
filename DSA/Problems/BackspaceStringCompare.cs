@@ -15,18 +15,62 @@ namespace DSA.Problems
     /// </output>
     public class BackspaceStringCompare
     {
-        // Time:    O(n). Linear. Worst case, it will iterate over all characters in both arrays before making a determination.
+        private const char BackspaceCharacter = '#';
+
+        // Time:    O(n). Linear. Worst case, it will iterate over all characters in both stringd before making a determination.
         //                It may find a difference in the arrays more quickly than n, but this can't be relied on.
-        // Memory:  O(1). Constant. Additional memory is only used to keep track of string iterators and backspace occurences.
-        public static bool BruteForce(string a, string b)
+        // Memory:  O(1). Constant. Additional memory is only used to keep track of string pointers.
+        public static bool TwoPointer(string a, string b)
         {
             if (IsEqualShortcut(a, b)) return true;
             if (IsInvalidParams(a, b)) return false;
 
-            // Start from the right side of both strings since backspace characters remove characters to their left
-            // Increment backspace counts when backspaces are found, decrement and ignore current character when they're not
+            var aIndex = a.Length - 1;
+            var bIndex = b.Length - 1;
+
+            // Exhaust matching characters
+            while (aIndex >= 0 && bIndex >= 0)
+            {
+                var currentCharA = GetNextCharacter(a, ref aIndex);
+                var currentCharB = GetNextCharacter(b, ref bIndex);
+
+                if (currentCharA != currentCharB) return false;
+            }
+
+            // Compare trailing A, if it exists
+            if (aIndex >= 0) { if (GetNextCharacter(a, ref aIndex) != null) return false; }
+
+            // Compare trailing B, if it exists
+            if (bIndex >= 0) { if (GetNextCharacter(b, ref bIndex) != null) return false; }
 
             return true;
+        }
+
+        private static char? GetNextCharacter(string input, ref int index)
+        {
+            var backspaceCount = 0;
+
+            while (index >= 0)
+            {
+                var currentCharacter = input[index];
+                index--;
+
+                if (currentCharacter == BackspaceCharacter)
+                {
+                    backspaceCount++;
+                    continue;
+                }
+
+                if (backspaceCount > 0)
+                {
+                    backspaceCount--;
+                    continue;
+                }
+
+                return currentCharacter;
+            }
+
+            return null;
         }
 
         private static bool IsEqualShortcut(string a, string b)
@@ -52,16 +96,16 @@ namespace DSA.Problems
         [TestMethod]
         public void BruteForceEmptyString()
         {
-            Assert.IsTrue(BackspaceStringCompare.BruteForce(string.Empty, string.Empty));
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(string.Empty, string.Empty));
         }
 
         [TestMethod]
         public void BruteForceNulls()
         {
-            Assert.IsTrue(BackspaceStringCompare.BruteForce(null, null));
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(null, null));
 
-            Assert.IsFalse(BackspaceStringCompare.BruteForce("a", null));
-            Assert.IsFalse(BackspaceStringCompare.BruteForce(null, "b"));
+            Assert.IsFalse(BackspaceStringCompare.TwoPointer("a", null));
+            Assert.IsFalse(BackspaceStringCompare.TwoPointer(null, "b"));
         }
 
         [TestMethod]
@@ -70,12 +114,12 @@ namespace DSA.Problems
             var testA = "abc#d";
             var testB = "abd";
 
-            Assert.IsTrue(BackspaceStringCompare.BruteForce(testA, testB));
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(testA, testB));
 
             var testAA = "a########bc###";
             var testBB = "abc###";
 
-            Assert.IsTrue(BackspaceStringCompare.BruteForce(testAA, testBB));
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(testAA, testBB));
         }
 
         [TestMethod]
@@ -84,16 +128,43 @@ namespace DSA.Problems
             var testA = "a########bc###";
             var testB = "a#b#c#";
 
-            Assert.IsTrue(BackspaceStringCompare.BruteForce(testA, testB));
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(testA, testB));
         }
 
         [TestMethod]
-        public void BruteForceNegative()
+        public void BruteForcePositiveDifferentLength()
+        {
+            var testA = "nzp#o#g";      //"nzg"
+            var testB = "b#nzp#o#g";    //"nzg
+
+            Assert.IsTrue(BackspaceStringCompare.TwoPointer(testA, testB));
+        }
+
+        [TestMethod]
+        public void BruteForceNegativeLongerB()
         {
             var testA = "abcd";
             var testB = "abc";
 
-            Assert.IsFalse(BackspaceStringCompare.BruteForce(testA, testB));
+            Assert.IsFalse(BackspaceStringCompare.TwoPointer(testA, testB));
+        }
+
+        [TestMethod]
+        public void BruteForceNegativeLongerA()
+        {
+            var testA = "bbbextm";  //bbbextm
+            var testB = "bbb#extm"; //bbextm
+
+            Assert.IsFalse(BackspaceStringCompare.TwoPointer(testA, testB));
+        }
+
+        [TestMethod]
+        public void BruteForceNegativeSameLength()
+        {
+            var testA = "a#c";  //c
+            var testB = "b";    //b
+
+            Assert.IsFalse(BackspaceStringCompare.TwoPointer(testA, testB));
         }
     }
 }
