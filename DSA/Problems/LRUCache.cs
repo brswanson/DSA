@@ -6,7 +6,7 @@ namespace DSA.Problems
     // Get/Add/Delete Time: O(1).   Accessing a value from, adding to, or removing from the HashSet is constant regardless of overall input size. 
     //                              Additional time may be taken to increase the size of the HashSet until the maximum is reached.
     //                              Reordering nodes in order to drop the LRU item is constant.
-    // Memory:  O(2n) => O(n).      Scales linearly with incoming data.
+    // Memory:  O(2n) -> O(n).      Scales linearly with incoming data.
     public class LruCache<T>
     {
         private readonly HashSet<T> _cachedValuesSet;
@@ -39,7 +39,7 @@ namespace DSA.Problems
 
         private void ReOrderNodes(bool isNewItem, T value)
         {
-            if (Count > _maxCacheCount) RemoveLeastRecentlyUsedItem();
+            if (Count >= _maxCacheCount) RemoveLeastRecentlyUsedItem();
 
             if (!isNewItem) _recentNodesList.Remove(value);
             _recentNodesList.AddFirst(value);
