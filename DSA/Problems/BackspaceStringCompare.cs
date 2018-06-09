@@ -17,11 +17,13 @@ namespace DSA.Problems
     {
         private const char BackspaceCharacter = '#';
 
-        // Time:    O(n). Linear. Worst case, it will iterate over all characters in both stringd before making a determination.
-        //                It may find a difference in the arrays more quickly than n, but this can't be relied on.
-        // Memory:  O(1). Constant. Additional memory is only used to keep track of string pointers.
         public static bool TwoPointer(string a, string b)
         {
+            // Time: O(n + m)   Linear, where n and m are the lengths of the passed in string arrays.
+            //                  Worst case, it will iterate over all characters in both strings before making a determination.
+            //                  It may find a difference in the arrays more quickly but this can't be relied on.
+            // Memory: O(1).    Constant. Additional memory is only used to keep track of string pointers.
+
             if (IsEqualShortcut(a, b)) return true;
             if (IsInvalidParams(a, b)) return false;
 
