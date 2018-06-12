@@ -33,51 +33,41 @@ namespace DSA.Problems
 
             if (InputIsInvalid(rootNode)) return traversalList;
 
-            var leftQueue = new Queue<BinaryTreeNode<int>>();
+            var leftStack = new Stack<BinaryTreeNode<int>>();
             var rightStack = new Stack<BinaryTreeNode<int>>();
 
-            leftQueue.Enqueue(rootNode);
+            leftStack.Push(rootNode);
 
-            while (leftQueue.Count > 0 || rightStack.Count > 0)
+            while (leftStack.Count > 0 || rightStack.Count > 0)
             {
-                EmptyQueue(leftQueue, rightStack, traversalList);
-                EmptyStack(leftQueue, rightStack, traversalList);
+                EmptyStack(leftStack, rightStack, traversalList, false);
+                EmptyStack(rightStack, leftStack, traversalList, true);
             }
 
             return traversalList;
         }
 
-        private static void EmptyQueue(Queue<BinaryTreeNode<int>> queue, Stack<BinaryTreeNode<int>> stack, List<List<int>> traversalList)
+        private static void EmptyStack(Stack<BinaryTreeNode<int>> leftStack, Stack<BinaryTreeNode<int>> rightStack, ICollection<List<int>> traversalList, bool leftToRight)
         {
             var newTraversal = new List<int>();
 
-            while (queue.Count > 0)
+            while (rightStack.Count > 0)
             {
-                var node = queue.Dequeue();
+                var node = rightStack.Pop();
                 if (node == null) continue;
 
                 newTraversal.Add(node.Value);
 
-                if (node.Left != null) stack.Push(node.Left);
-                if (node.Right != null) stack.Push(node.Right);
-            }
-
-            if (newTraversal.Count > 0) traversalList.Add(newTraversal);
-        }
-
-        private static void EmptyStack(Queue<BinaryTreeNode<int>> queue, Stack<BinaryTreeNode<int>> stack, List<List<int>> traversalList)
-        {
-            var newTraversal = new List<int>();
-
-            while (stack.Count > 0)
-            {
-                var node = stack.Pop();
-                if (node == null) continue;
-
-                newTraversal.Add(node.Value);
-
-                if (node.Left != null) queue.Enqueue(node.Left);
-                if (node.Right != null) queue.Enqueue(node.Right);
+                if (leftToRight)
+                {
+                    if (node.Left != null) leftStack.Push(node.Left);
+                    if (node.Right != null) leftStack.Push(node.Right);
+                }
+                else
+                {
+                    if (node.Right != null) leftStack.Push(node.Right);
+                    if (node.Left != null) leftStack.Push(node.Left);
+                }
             }
 
             if (newTraversal.Count > 0) traversalList.Add(newTraversal);
