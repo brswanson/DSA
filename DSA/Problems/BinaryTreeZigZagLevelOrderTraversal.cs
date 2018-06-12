@@ -16,23 +16,71 @@ namespace DSA.Problems
         ///       3
         ///     /   \
         ///    9     20
-        ///          /  \
-        ///         15   7
+        ///         /  \
+        ///        15   7
         /// </input>
         /// <output>
         ///     [[3], [20,9], [15,7]]
         /// </output>
         public static List<List<int>> DepthFirstSearch(BinaryTreeNode<int> rootNode)
         {
-            // TODO: Add time and space complexity
+            // Time: O(n).      Linear, where n is the number of input nodes.
+            //                  Every node's value has to be read and returned so this is likely optimal.
+            // Memory: O(n).    Linear, where n is the number of input nodes.
+            //                  Every node's value has to be returned in a different structure and order so this is likely optimal (node to list of node values)
 
-            var traversal = new List<List<int>>();
+            var traversalList = new List<List<int>>();
 
-            if (InputIsInvalid(rootNode)) return traversal;
+            if (InputIsInvalid(rootNode)) return traversalList;
 
-            // TODO: Implement alg
+            var leftQueue = new Queue<BinaryTreeNode<int>>();
+            var rightStack = new Stack<BinaryTreeNode<int>>();
 
-            return traversal;
+            leftQueue.Enqueue(rootNode);
+
+            while (leftQueue.Count > 0 || rightStack.Count > 0)
+            {
+                EmptyQueue(leftQueue, rightStack, traversalList);
+                EmptyStack(leftQueue, rightStack, traversalList);
+            }
+
+            return traversalList;
+        }
+
+        private static void EmptyQueue(Queue<BinaryTreeNode<int>> queue, Stack<BinaryTreeNode<int>> stack, List<List<int>> traversalList)
+        {
+            var newTraversal = new List<int>();
+
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                if (node == null) continue;
+
+                newTraversal.Add(node.Value);
+
+                if (node.Left != null) stack.Push(node.Left);
+                if (node.Right != null) stack.Push(node.Right);
+            }
+
+            if (newTraversal.Count > 0) traversalList.Add(newTraversal);
+        }
+
+        private static void EmptyStack(Queue<BinaryTreeNode<int>> queue, Stack<BinaryTreeNode<int>> stack, List<List<int>> traversalList)
+        {
+            var newTraversal = new List<int>();
+
+            while (stack.Count > 0)
+            {
+                var node = stack.Pop();
+                if (node == null) continue;
+
+                newTraversal.Add(node.Value);
+
+                if (node.Left != null) queue.Enqueue(node.Left);
+                if (node.Right != null) queue.Enqueue(node.Right);
+            }
+
+            if (newTraversal.Count > 0) traversalList.Add(newTraversal);
         }
 
         public static bool InputIsInvalid<T>(BinaryTreeNode<T> rootNode)
@@ -54,8 +102,13 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeZigZagLevelOrderTraversalPositive()
+        public void BinaryTreeZigZagLevelOrderTraversalPositivePartialLevels()
         {
+            //       3
+            //     /   \
+            //    9     20
+            //         /  \
+            //        15   7
             var testNode = new BinaryTreeNode<int>(3)
             {
                 Left = new BinaryTreeNode<int>(9),
@@ -64,7 +117,7 @@ namespace DSA.Problems
             testNode.Right.Left = new BinaryTreeNode<int>(15);
             testNode.Right.Right = new BinaryTreeNode<int>(7);
 
-            var expected = new List<IList<int>>
+            var expected = new List<List<int>>
             {
                 new List<int> {3},
                 new List<int> {20, 9},
@@ -73,7 +126,41 @@ namespace DSA.Problems
 
             var actual = BinaryTreeZigZagLevelOrderTraversal.DepthFirstSearch(testNode);
 
-            CollectionAssert.AreEqual(expected, actual);
+            CollectionAssert.AreEqual(expected[0], actual[0]);
+            CollectionAssert.AreEqual(expected[1], actual[1]);
+            CollectionAssert.AreEqual(expected[2], actual[2]);
+        }
+
+        [TestMethod]
+        public void BinaryTreeZigZagLevelOrderTraversalPositiveFullLevels()
+        {
+            //        3
+            //      /   \
+            //     9     20
+            //    / \   /  \
+            //   8   6 15   7
+            var testNode = new BinaryTreeNode<int>(3)
+            {
+                Left = new BinaryTreeNode<int>(9),
+                Right = new BinaryTreeNode<int>(20)
+            };
+            testNode.Right.Left = new BinaryTreeNode<int>(15);
+            testNode.Right.Right = new BinaryTreeNode<int>(7);
+            testNode.Left.Left = new BinaryTreeNode<int>(8);
+            testNode.Left.Right = new BinaryTreeNode<int>(6);
+
+            var expected = new List<List<int>>
+            {
+                new List<int> {3},
+                new List<int> {20, 9},
+                new List<int> {8, 6, 15, 7}
+            };
+
+            var actual = BinaryTreeZigZagLevelOrderTraversal.DepthFirstSearch(testNode);
+
+            CollectionAssert.AreEqual(expected[0], actual[0]);
+            CollectionAssert.AreEqual(expected[1], actual[1]);
+            CollectionAssert.AreEqual(expected[2], actual[2]);
         }
     }
 }
