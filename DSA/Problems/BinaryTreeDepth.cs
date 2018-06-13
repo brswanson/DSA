@@ -37,8 +37,9 @@ namespace DSA.Problems
         public static int IterativeBreadthFirstSearch(BinaryTreeNode<int> root)
         {
             // Time:    O(n).   Linear, where n is the number of input nodes. Each node is visited once to find the maximum depth.
-            // Memory:  O(d*k). Linear, where d is the maximum depth of the tree and k is the number of leaves on each node (d*2).
-            //                  Worst case, the widest level of the tree will exist in the heap using the queue's memory space.
+            // Memory:  O(n).   Linear, where n is the number of input nodes.
+            //                  In practice, the worst case is 2^h, where h is the height of the tree. 2^h is necessarily equal to or less than n in this case.
+            //                  This is because the algorithm only ever holds one level of the tree in the queue's memory at a time.
 
             if (IsInvalid(root)) return -1;
 
