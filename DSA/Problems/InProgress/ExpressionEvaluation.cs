@@ -27,46 +27,51 @@ namespace DSA.Problems.InProgress
         public static bool StateMachine(string expression)
         {
             // Time:    O(n).   One pass over the entire string from left to right. Evaluates the current state of the expression and compares it to potential valid states.
-            // Memory:  O(1).   A constant amount of memory is used to keep track of potential valid states.
+            // Memory:  O(1).   A constant amount of memory is used to keep track of potential valid states and bracket counts.
 
             // Treating null and empty string expressions as true
             if (string.IsNullOrEmpty(expression)) return true;
 
-            int bracketCount = 0;
+            var bracketStack = new Stack<char>();
             var validNextStates = ExpressionStateMachine.GetAllStates();
 
             for (var i = 0; i < expression.Length; i++)
             {
-                var currChar = expression[i];
-                var currentPossibleStates = ExpressionStateMachine.GetStates(currChar);
+                // Check brackets first for possible early return
+                if (BracketsInvalid(bracketStack, expression[i])) return false;
+
+                var currentPossibleStates = ExpressionStateMachine.GetStates(expression[i]);
 
                 // Check current state validity against previous valid states
-                if (StateIsInvalid(validNextStates, currentPossibleStates)) return false;
+                if (StateInvalid(validNextStates, currentPossibleStates)) return false;
                 // Use the possible states to get a list of all valid states
                 validNextStates = ExpressionStateMachine.GetValidStates(currentPossibleStates);
-
-                // TODO: Keep a Stack of brackets and compare the types on Pop instead of a count
-                UpdateBracketCount(ref bracketCount, currChar);
-                // Return early if the bracket count is off
-                if (bracketCount < 0) return false;
             }
 
             // Check to see if all brackets have a matching pair before returning true
-            if (bracketCount != 0) return false;
+            if (bracketStack.Count != 0) return false;
 
             return validNextStates.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
         }
 
-        private static bool StateIsInvalid(List<ExpressionStateMachine.ExpressionStateEnum> validStates, List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
+        private static bool StateInvalid(List<ExpressionStateMachine.ExpressionStateEnum> validStates, List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
         {
             // If any of the current states is valid for the previous possible states, continue
             return !validStates.Intersect(currentStates).Any();
         }
 
-        private static void UpdateBracketCount(ref int bracketCount, char bracket)
+        private static bool BracketsInvalid(Stack<char> bracketCount, char bracket)
         {
-            if (ExpressionStateMachine.IsOpeningBracket(bracket)) bracketCount++;
-            if (ExpressionStateMachine.IsClosingBracket(bracket)) bracketCount--;
+            if (ExpressionStateMachine.IsOpeningBracket(bracket)) bracketCount.Push(bracket);
+            if (ExpressionStateMachine.IsClosingBracket(bracket))
+            {
+                var lastBracket = bracketCount.Pop();
+
+                if (bracket == ')' && lastBracket != '(') return true;
+                if (bracket == '}' && lastBracket != '{') return true;
+            }
+
+            return false;
         }
     }
 
@@ -165,7 +170,7 @@ namespace DSA.Problems.InProgress
     public class TestExpressionEvaluation
     {
         [TestMethod]
-        public void StateMachineInvalidExpressionBrackets()
+        public void BracketsNegative()
         {
             string input = "((((1)"; // Invalid, too many parens
             const bool expected = false;
@@ -176,7 +181,40 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void StateMachineOperatorSign()
+        public void BracketsPositive()
+        {
+            string input = "(2)"; // Valid, "two"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void BracketsMultipleTypesPositive()
+        {
+            string input = "{(2)}"; // Valid, "two"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void BracketsMultipleTypesNegative()
+        {
+            string input = "{(2))"; // Invalid, "two"
+            const bool expected = false;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void OperatorSign()
         {
             string input = "1++2"; // Valid, "one plus positive one"
             const bool expected = true;
@@ -187,9 +225,9 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void StateMachineOperatorOperatorSign()
+        public void OperatorOperatorSign()
         {
-            string input = "1++-2"; // Invalid, "one plus plus negative one"
+            string input = "1---2"; // Invalid, "one minus minus negative one"
             const bool expected = false;
 
             var actual = ExpressionEvaluation.StateMachine(input);
@@ -198,7 +236,7 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void StateMachineOperators()
+        public void Operators()
         {
             string input = "1*2/3+5-6"; // Valid, "one times two divided by three plus five minus six"
             const bool expected = true;
@@ -209,7 +247,7 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void StateMachineAllTypes()
+        public void AllTypes()
         {
             string input = "-(((10/3)*4)+-1)";
             const bool expected = true;
