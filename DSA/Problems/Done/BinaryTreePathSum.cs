@@ -9,8 +9,10 @@ namespace DSA.Problems.Done
     {
         /// <summary>
         ///     Given a binary tree node and an integer, find the shortest path to reach the sum within the tree, if it exists.
-        ///     Mutation: As above, but all node values are positive integers.
         /// </summary>
+        /// <mutation>
+        ///     All node values are positive integers.
+        /// </mutation>
         /// <input>
         ///     TreeNode node, int sum
         /// </input>
@@ -59,6 +61,8 @@ namespace DSA.Problems.Done
             // Return to the root node
             route.RemoveRange(1, route.Count - 1);
         }
+
+        // TODO: Implement a version of the aglorithm that utilizes the positive node value mutation
     }
 
     [TestClass]
