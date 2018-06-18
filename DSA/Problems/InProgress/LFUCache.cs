@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.InProgress
 {
     // Get/Add/Delete Time: O(1). Constant time should be possible. Currently Gets are linear due to the effort of finding the appropriate ranking index and searching its collection.
     // Memory:  O(2n) -> O(n). Scales linearly  with incoming data.

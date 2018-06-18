@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     // Get/Add/Delete Time: O(1).   Accessing a value from, adding to, or removing from the HashSet is constant regardless of overall input size. 
     //                              Additional time may be taken to increase the size of the HashSet until the maximum is reached.

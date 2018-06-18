@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     /// <summary>
     ///     Given an array of integers 'a' and a number 'd', perform a rotation of value 'd' on the array.

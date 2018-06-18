@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     /// <summary>
     ///     Given an array of integers, find the majority element.

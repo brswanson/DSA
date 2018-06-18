@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     public class NthDigit
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     /// <summary>
     ///     Given two strings A and B, return if they are equal. Strings may contain a backspace character represented by '#'.

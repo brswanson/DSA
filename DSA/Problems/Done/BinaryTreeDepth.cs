@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DSA.Structures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems
+namespace DSA.Problems.Done
 {
     /// <summary>
     ///     Given a binary tree, find its maximum depth.

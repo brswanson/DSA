@@ -1,4 +1,4 @@
-﻿namespace DSA.Problems
+﻿namespace DSA.Problems.ToDo
 {
     internal class CompressedString
     {
