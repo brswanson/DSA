@@ -3,27 +3,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems.Done
 {
+    /// <summary>
+    ///     Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much
+    ///     water it is able to trap after raining.
+    /// </summary>
+    /// <input>
+    ///     arr[] = [2, 0, 2]
+    /// </input>
+    /// <output>
+    ///     2
+    /// </output>
+    /// <notes>
+    ///     Given input:    [4, 0, 2, 0, 3, 0, 2, 0, 1]
+    ///     Water trapped:  [0, 3, 1, 3, 0, 2, 0, 1, 0]
+    ///     Example diagram:
+    ///     |             |___     
+    ///     |   |      ~  |   |_   
+    ///     | | | |    ~  | | | |_ 
+    ///     |_|_|_|_|     |_|_|_|_|
+    /// </notes>
     public class TrappingRainWater
     {
-        /// <summary>
-        ///     Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much
-        ///     water it is able to trap after raining.
-        /// </summary>
-        /// <input>
-        ///     arr[] = [2, 0, 2]
-        /// </input>
-        /// <output>
-        ///     2
-        /// </output>
-        /// <notes>
-        ///     Given input:    [4, 0, 2, 0, 3, 0, 2, 0, 1]
-        ///     Water trapped:  [0, 3, 1, 3, 0, 2, 0, 1, 0]
-        ///     Example diagram:
-        ///     |             |___     
-        ///     |   |      ~  |   |_   
-        ///     | | | |    ~  | | | |_ 
-        ///     |_|_|_|_|     |_|_|_|_|
-        /// </notes>
         public static int OnePass(int[] input)
         {
             // Time:    O(n).   One pass over the entire array. Reads from left and right while keeping track of the max left and right values to calculate water depth.

@@ -4,24 +4,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems.Done
 {
+    /// <summary>
+    ///     Given a binary tree, return the zigzag level order traversal of its nodes' values.
+    ///     For example: from left to right, then right to left for the next level and alternate between).
+    /// </summary>
+    /// <input>
+    ///     [3,9,20,null,null,15,7]
+    ///     Tree representation:
+    ///       3
+    ///     /   \
+    ///    9     20
+    ///         /  \
+    ///        15   7
+    /// </input>
+    /// <output>
+    ///     [[3], [20,9], [15,7]]
+    /// </output>
     public class BinaryTreeZigZagLevelOrderTraversal
     {
-        /// <summary>
-        ///     Given a binary tree, return the zigzag level order traversal of its nodes' values.
-        ///     For example: from left to right, then right to left for the next level and alternate between).
-        /// </summary>
-        /// <input>
-        ///     [3,9,20,null,null,15,7]
-        ///     Tree representation:
-        ///       3
-        ///     /   \
-        ///    9     20
-        ///         /  \
-        ///        15   7
-        /// </input>
-        /// <output>
-        ///     [[3], [20,9], [15,7]]
-        /// </output>
         public static List<List<int>> DepthFirstSearch(BinaryTreeNode<int> rootNode)
         {
             // Time: O(n).      Linear, where n is the number of input nodes.
