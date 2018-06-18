@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Structures
 {
-    [TestClass]
     public class BTree
     {
         private BTreeNode _root;
@@ -102,28 +101,6 @@ namespace DSA.Structures
 
             return;
         }
-
-        [TestMethod]
-        public void BTreeSearch()
-        {
-            var actual = new BTree();
-
-            // Search before adding elements
-            Assert.AreEqual(null, actual.Search(1));
-
-            actual.AddValue(1);
-            actual.AddValue(2);
-            actual.AddValue(3);
-            actual.AddValue(4);
-            actual.AddValue(5);
-
-            // Search after adding elements
-            Assert.AreEqual(1, actual.Search(1));
-            Assert.AreEqual(2, actual.Search(2));
-            Assert.AreEqual(3, actual.Search(3));
-            Assert.AreEqual(4, actual.Search(4));
-            Assert.AreEqual(5, actual.Search(5));
-        }
     }
 
     public class BTreeNode
@@ -154,6 +131,32 @@ namespace DSA.Structures
             if (IsFull) return;
 
             Values[Count] = value;
+        }
+    }
+
+    [TestClass]
+    public class TestBTree
+    {
+        [TestMethod]
+        public void BTreeSearch()
+        {
+            var actual = new BTree();
+
+            // Search before adding elements
+            Assert.AreEqual(null, actual.Search(1));
+
+            actual.AddValue(1);
+            actual.AddValue(2);
+            actual.AddValue(3);
+            actual.AddValue(4);
+            actual.AddValue(5);
+
+            // Search after adding elements
+            Assert.AreEqual(1, actual.Search(1));
+            Assert.AreEqual(2, actual.Search(2));
+            Assert.AreEqual(3, actual.Search(3));
+            Assert.AreEqual(4, actual.Search(4));
+            Assert.AreEqual(5, actual.Search(5));
         }
     }
 }

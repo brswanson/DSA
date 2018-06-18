@@ -83,7 +83,7 @@ namespace DSA.Problems
     public class TestBinaryTreeZigZagLevelOrderTraversal
     {
         [TestMethod]
-        public void BinaryTreeZigZagLevelOrderTraversalNullRef()
+        public void NullRef()
         {
             var expected = new List<List<int>>();
             var actual = BinaryTreeZigZagLevelOrderTraversal.DepthFirstSearch(null);
@@ -92,7 +92,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeZigZagLevelOrderTraversalPositivePartialLevels()
+        public void PositivePartialLevels()
         {
             //       3
             //     /   \
@@ -122,7 +122,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeZigZagLevelOrderTraversalPositiveFullLevels()
+        public void PositiveFullLevels()
         {
             //        3
             //      /   \

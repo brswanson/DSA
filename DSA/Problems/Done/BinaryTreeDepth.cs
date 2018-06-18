@@ -83,13 +83,13 @@ namespace DSA.Problems
     public class TestBinaryTreeDepth
     {
         [TestMethod]
-        public void BinaryTreeDepthRecursiveNullRef()
+        public void RecursiveNullRef()
         {
             Assert.AreEqual(-1, BinaryTreeDepth.RecursiveDepthFirstSearch(null));
         }
 
         [TestMethod]
-        public void BinaryTreeDepthRecursivePartialLeaves()
+        public void RecursivePartialLeaves()
         {
             //           3
             //         /   \
@@ -118,7 +118,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeDepthRecursiveFullLeaves()
+        public void RecursiveFullLeaves()
         {
             //           3
             //         /   \
@@ -137,13 +137,13 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeDepthIterativeNullRef()
+        public void IterativeNullRef()
         {
             Assert.AreEqual(-1, BinaryTreeDepth.IterativeBreadthFirstSearch(null));
         }
 
         [TestMethod]
-        public void BinaryTreeDepthIterativePartialLeaves()
+        public void IterativePartialLeaves()
         {
             //           3
             //         /   \
@@ -172,7 +172,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreeDepthIterativeFullLeaves()
+        public void IterativeFullLeaves()
         {
             //           3
             //         /   \

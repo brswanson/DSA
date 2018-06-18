@@ -3,10 +3,9 @@ using System.Linq;
 
 namespace DSA.Sorting
 {
-    [TestClass]
     public class MergeSort
     {
-        public static int[] SortIntegerArrayAscending(int[] input)
+        public static int[] Recursive(int[] input)
         {
             // Time:    O(nlogn).   Arrays are halved on each recursive call, leaving logn total merges. Each merge takes n time to sort the data.
             // Memory:  O(n).       New arrays are created and their memory is allocated at each recursive step.
@@ -15,11 +14,6 @@ namespace DSA.Sorting
             // Checking edge cases
             if (input == null) return null;
 
-            return MergeSortRecursive(input);
-        }
-
-        private static int[] MergeSortRecursive(int[] input)
-        {
             if (input.Length <= 1) return input;
 
             var mid = input.Length / 2;
@@ -27,7 +21,7 @@ namespace DSA.Sorting
             var arrayA = input.Take(mid).ToArray();
             var arrayB = input.Skip(mid).Take(input.Length - mid).ToArray();
 
-            return Merge(MergeSortRecursive(arrayA), MergeSortRecursive(arrayB));
+            return Merge(Recursive(arrayA), Recursive(arrayB));
         }
 
         private static int[] Merge(int[] arrayA, int[] arrayB)
@@ -74,14 +68,18 @@ namespace DSA.Sorting
 
             return mergedArray;
         }
+    }
 
+    [TestClass]
+    public class TestMergeSort
+    {
         [TestMethod]
-        public void TestMergeSort()
+        public void MergeSortRecursive()
         {
             var input = new[] { 7, 3, 1, 9, 8, 2, 4, 6, 5, 0 };
             var expected = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            var actual = SortIntegerArrayAscending(input);
+            var actual = MergeSort.Recursive(input);
 
             Assert.AreEqual(expected.Length, input.Length);
             for (var i = 0; i < expected.Length; i++)

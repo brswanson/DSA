@@ -3,7 +3,6 @@ using System;
 
 namespace DSA.Problems
 {
-    [TestClass]
     public class NthDigit
     {
         /// <summary>
@@ -18,7 +17,7 @@ namespace DSA.Problems
         /// <notes>
         ///     n is positive and will fit within the range of a 32-bit signed integer (n less than 231).
         /// </notes>
-        public int BruteForce(int input)
+        public static int BruteForce(int input)
         {
             // Time:    O(n). Iterates over integers in the sequence until it reaches the desired length.
             // Memory:  O(1). Requires a constant amount of additonal memory to keep track of its place in the integer sequence.
@@ -42,13 +41,17 @@ namespace DSA.Problems
                 currentNumber++;
             }
         }
+    }
 
+    [TestClass]
+    public class TestNthDigit
+    {
         [TestMethod]
-        public void TestNthDigit()
+        public void BruteForce()
         {
             const int input = 11;
             const int expected = 0;
-            var actual = BruteForce(input);
+            var actual = NthDigit.BruteForce(input);
 
             Assert.AreEqual(expected, actual);
         }

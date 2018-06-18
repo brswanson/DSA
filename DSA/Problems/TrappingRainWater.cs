@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Problems
 {
-    [TestClass]
     public class TrappingRainWater
     {
         /// <summary>
@@ -25,7 +24,7 @@ namespace DSA.Problems
         ///     | | | |    ~  | | | |_ 
         ///     |_|_|_|_|     |_|_|_|_|
         /// </notes>
-        public int OnePass(int[] input)
+        public static int OnePass(int[] input)
         {
             // Time:    O(n).   One pass over the entire array. Reads from left and right while keeping track of the max left and right values to calculate water depth.
             // Memory:  O(1).   A constant amount of memory is used to keep track of max left, max right, and the output.
@@ -83,14 +82,18 @@ namespace DSA.Problems
         {
             maxValue = Math.Max(maxValue, newValue);
         }
+    }
 
+    [TestClass]
+    public class TestTrappingRainWater
+    {
         [TestMethod]
-        public void TestTrappingRainWater()
+        public void OnePass()
         {
             int[] input = { 9, 1, 2, 5, 5, 0, 2, 0, 9 };
             const int expected = 48;
 
-            var actual = OnePass(input);
+            var actual = TrappingRainWater.OnePass(input);
 
             Assert.AreEqual(expected, actual);
         }

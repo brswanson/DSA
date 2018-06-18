@@ -2,12 +2,11 @@
 
 namespace DSA.Sorting
 {
-    [TestClass]
     public class InsertionSort
     {
         public static void SortIntegerArrayAscending(int[] input)
         {
-            // Time:    O(n2).  Iterates over each integer in the array at least once (n). May also iterate over each integer in the array once for each integer in the array (n).
+            // Time:    O(n^2).  Iterates over each integer in the array at least once (n). May also iterate over each integer in the array once for each integer in the array (n).
             // Memory:  O(1).   Sorts in place.
 
             // Checking edge cases
@@ -31,14 +30,18 @@ namespace DSA.Sorting
                 index++;
             }
         }
+    }
 
+    [TestClass]
+    public class TestInsertionSort
+    {
         [TestMethod]
-        public void TestInsertionSort()
+        public void InsertionSortIterative()
         {
             var input = new[] { 7, 3, 1, 9, 8, 2, 4, 6, 5, 0 };
             var expected = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            SortIntegerArrayAscending(input);
+            InsertionSort.SortIntegerArrayAscending(input);
 
             Assert.AreEqual(expected.Length, input.Length);
             for (var i = 0; i < expected.Length; i++)

@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Structures
 {
-    [TestClass]
     public class StringHashtable
     {
         private LinkedList<string>[] _valueSpace;
@@ -19,11 +18,11 @@ namespace DSA.Structures
 
             foreach (var value in input)
             {
-                AddValue(value);
+                Add(value);
             }
         }
 
-        private void AddValue(string value)
+        public void Add(string value)
         {
             var hashedKey = HashFunction(value);
 
@@ -67,13 +66,17 @@ namespace DSA.Structures
         }
 
         public string this[string key] => GetValue(key);
+    }
 
+    [TestClass]
+    public class TestStringHashtable
+    {
         [TestMethod]
-        public void TestHashtable()
+        public void Hashtable()
         {
             // Check default constructor
             var actual = new StringHashtable();
-            actual.AddValue("1");
+            actual.Add("1");
             Assert.AreEqual(actual["1"], "1");
 
             // Re-init using var constructor
@@ -89,11 +92,11 @@ namespace DSA.Structures
             Assert.AreEqual(actual["55555"], "55555");
 
             // Force size increase
-            actual.AddValue("666666");
+            actual.Add("666666");
             Assert.AreEqual(actual["666666"], "666666");
 
             // Force chaining
-            actual.AddValue("1");
+            actual.Add("1");
             Assert.AreEqual(actual["1"], "1");
         }
     }

@@ -24,7 +24,7 @@ namespace DSA.Problems
         ///     To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1.
         ///     So it is impossible.
         /// </notes>
-        public bool DFS(int numCourses, List<int[]> prerequisites)
+        public static bool DFS(int numCourses, List<int[]> prerequisites)
         {
             // Time:    O(v + n).   One pass over each vertex and node.
             // Memory:  O(v + n).   Extra memory for each vertex and node.
@@ -33,7 +33,7 @@ namespace DSA.Problems
             if (numCourses <= 0 || prerequisites.Count <= 0) return true;
 
             //TODO:
-            // Build a strucutre for the graph so it can be search
+            // Build a structure for the graph so it can be searched
             // Search each node DFS. If false, return false.
 
             return true;
@@ -51,25 +51,29 @@ namespace DSA.Problems
             perm[i] = true;
             temp[i] = false;
          */
+    }
 
+    [TestClass]
+    public class TestCourseSchedule
+    {
         [TestMethod]
-        public void CourseScheduleDirectedGraph()
+        public void DirectedGraph()
         {
             var input = new List<int[]> { new[] { 1, 0 }, new[] { 0, 1 } };
             const bool expected = false;
 
-            var actual = DFS(input.Count, input);
+            var actual = CourseSchedule.DFS(input.Count, input);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void CourseScheduleUndirectedGraph()
+        public void UndirectedGraph()
         {
             var input = new List<int[]> { new[] { 0, 1 }, new[] { 1, 2 } };
             const bool expected = true;
 
-            var actual = DFS(input.Count, input);
+            var actual = CourseSchedule.DFS(input.Count, input);
 
             Assert.AreEqual(expected, actual);
         }

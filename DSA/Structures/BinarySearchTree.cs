@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace DSA.Structures
 {
-    [TestClass]
     public class BinarySearchTree
     {
         private BinaryTreeNode<int> _root;
@@ -144,8 +143,26 @@ namespace DSA.Structures
             return null;
         }
 
+    }
+
+    public class BinaryTreeNode<T>
+    {
+        public T Value;
+        public BinaryTreeNode<T> Left;
+        public BinaryTreeNode<T> Right;
+
+        public BinaryTreeNode(T value)
+        {
+            Value = value;
+        }
+    }
+
+    [TestClass]
+    public class TestBinarySearchTree
+    {
+
         [TestMethod]
-        public void TestBinarySearchTree()
+        public void BinarySearchTree()
         {
             int[] inputIterative = { 7, 9, 12, 10 };
             int[] inputRecursive = { 3, 1, 4, 8 };
@@ -163,18 +180,6 @@ namespace DSA.Structures
             // Test null
             Assert.IsNull(tree.Search(99));
             Assert.IsNull(tree.Search(99, true));
-        }
-    }
-
-    public class BinaryTreeNode<T>
-    {
-        public T Value;
-        public BinaryTreeNode<T> Left;
-        public BinaryTreeNode<T> Right;
-
-        public BinaryTreeNode(T value)
-        {
-            Value = value;
         }
     }
 }

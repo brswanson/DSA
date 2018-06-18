@@ -65,7 +65,7 @@ namespace DSA.Problems
     public class TestBinaryTreePathSum
     {
         [TestMethod]
-        public void BinaryTreePathSumNullRef()
+        public void NullRef()
         {
             // [Test 'null' for ref types]
             Assert.IsNull(BinaryTreePathSum.Algorithm(null, 1));
@@ -73,7 +73,7 @@ namespace DSA.Problems
 
         // TODO: Currently fails this test. Should protect the alg from int overflows
         [TestMethod]
-        public void BinaryTreePathSumIntBoundaries()
+        public void IntBoundaries()
         {
             // [Testing int boundaries]
             // Create nodes that will cause wrapping since C# handles overflow by default this way
@@ -88,7 +88,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreePathSumWithoutSolution()
+        public void WithoutSolution()
         {
             // [Test a set which contains no solution]
             /*  Goal: 2. No route.
@@ -99,7 +99,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreePathSumWithSolution()
+        public void WithSolution()
         {
             // [Test a set which contains a solution]
             /*  Goal: 2. Root, left.
@@ -115,7 +115,7 @@ namespace DSA.Problems
         }
 
         [TestMethod]
-        public void BinaryTreePathSumSubOptimalSolution()
+        public void SubOptimalSolution()
         {
             // [Test a set which contains an optimal and sub-optimal solution]
             /*  Goal: 10. Root, left, left, for a total of 3 steps. Root, right, for a total of 2 steps.
