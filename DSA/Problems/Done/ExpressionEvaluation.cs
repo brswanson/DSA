@@ -2,11 +2,10 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DSA.Problems.InProgress
+namespace DSA.Problems.Done
 {
     /// <summary>
     ///     Evaluate the validity of the passed in mathematical expression.
-    /// 
     ///     The expression may contain the following types of characters:
     ///     Numeric: [0 ... 9]
     ///     Operators: [+,-,*,/]
@@ -61,7 +60,9 @@ namespace DSA.Problems.InProgress
             return validStates.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
         }
 
-        private static ExpressionStateMachine.ExpressionStateEnum GetNextValidState(List<ExpressionStateMachine.ExpressionStateEnum> validStates, List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
+        private static ExpressionStateMachine.ExpressionStateEnum GetNextValidState(
+            List<ExpressionStateMachine.ExpressionStateEnum> validStates,
+            List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
         {
             var nextStatePossabilities = validStates.Intersect(currentStates).ToList();
 
@@ -88,10 +89,10 @@ namespace DSA.Problems.InProgress
     public static class ExpressionStateMachine
     {
         public static bool IsNumeric(char c) => char.IsDigit(c);
-        public static bool IsOperator(char c) => new List<char> { '+', '-', '/', '*' }.Contains(c);
-        public static bool IsSign(char c) => new List<char> { '+', '-' }.Contains(c);
-        public static bool IsOpeningBracket(char c) => new List<char> { '(', '{' }.Contains(c);
-        public static bool IsClosingBracket(char c) => new List<char> { ')', '}' }.Contains(c);
+        public static bool IsOperator(char c) => new List<char> {'+', '-', '/', '*'}.Contains(c);
+        public static bool IsSign(char c) => new List<char> {'+', '-'}.Contains(c);
+        public static bool IsOpeningBracket(char c) => new List<char> {'(', '{'}.Contains(c);
+        public static bool IsClosingBracket(char c) => new List<char> {')', '}'}.Contains(c);
 
         public enum ExpressionStateEnum
         {
@@ -177,6 +178,7 @@ namespace DSA.Problems.InProgress
     public class TestExpressionEvaluation
     {
         #region  Number
+
         [TestMethod]
         public void Number()
         {
@@ -209,9 +211,11 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
 
         #region Operator
+
         [TestMethod]
         public void OperatorsAll()
         {
@@ -244,9 +248,11 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
 
         #region Bracket
+
         [TestMethod]
         public void BracketsCountPositive()
         {
@@ -290,9 +296,11 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
 
         #region Sign
+
         [TestMethod]
         public void SignsPositive()
         {
@@ -325,9 +333,11 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
 
         #region Exit
+
         [TestMethod]
         public void Exit()
         {
@@ -338,9 +348,11 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
 
         #region General
+
         [TestMethod]
         public void AllTypes()
         {
@@ -362,6 +374,7 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+
         #endregion
     }
 }
