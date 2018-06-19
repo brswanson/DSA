@@ -34,7 +34,7 @@ namespace DSA.Problems.InProgress
 
             var bracketStack = new Stack<char>();
             // Init with all states since the first character hasn't been read yet
-            var validStates = ExpressionStateMachine.GetAllValidStates();
+            var validStates = ExpressionStateMachine.GetValidStartStates();
 
             for (var i = 0; i < expression.Length; i++)
             {
@@ -122,12 +122,11 @@ namespace DSA.Problems.InProgress
             return states;
         }
 
-        public static List<ExpressionStateEnum> GetAllValidStates()
+        public static List<ExpressionStateEnum> GetValidStartStates()
         {
             return new List<ExpressionStateEnum>
             {
                 ExpressionStateEnum.Numeric,
-                ExpressionStateEnum.Operator,
                 ExpressionStateEnum.Sign,
                 ExpressionStateEnum.Bracket,
                 ExpressionStateEnum.Exit
@@ -178,10 +177,10 @@ namespace DSA.Problems.InProgress
     public class TestExpressionEvaluation
     {
         [TestMethod]
-        public void BracketsNegative()
+        public void BracketsCountPositive()
         {
-            string input = "((((1)"; // Invalid, too many parens
-            const bool expected = false;
+            string input = "(2)"; // Valid, "two"
+            const bool expected = true;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
@@ -189,10 +188,10 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void BracketsPositive()
+        public void BracketsCountNegative()
         {
-            string input = "(2)"; // Valid, "two"
-            const bool expected = true;
+            string input = "((((1)"; // Invalid, too many parens
+            const bool expected = false;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
@@ -244,7 +243,7 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void Operators()
+        public void AllOperators()
         {
             string input = "1*2/3+5-6"; // Valid, "one times two divided by three plus five minus six"
             const bool expected = true;
@@ -255,10 +254,21 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void AllTypes()
+        public void AllTypesPositive()
         {
-            string input = "-(((10/3)*4)+-1)";
+            string input = "-(((10/3)*4)+-1)"; // Valid, "negative ten divided by three times four plus negative one"
             const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SignSignNumber()
+        {
+            string input = "--5"; // Invalid, "minus negative five
+            const bool expected = false;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
