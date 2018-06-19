@@ -26,38 +26,48 @@ namespace DSA.Problems.InProgress
     {
         public static bool StateMachine(string expression)
         {
-            // Time:    O(n).   One pass over the entire string from left to right. Evaluates the current state of the expression and compares it to potential valid states.
-            // Memory:  O(1).   A constant amount of memory is used to keep track of potential valid states and bracket counts.
+            // Time:    O(n).   One pass over the entire string from left to right. Evaluates the current state of the expression and compares it to valid states.
+            // Memory:  O(1).   A constant amount of memory is used to keep track of valid states and bracket counts.
 
             // Treating null and empty string expressions as true
             if (string.IsNullOrEmpty(expression)) return true;
 
             var bracketStack = new Stack<char>();
-            var validNextStates = ExpressionStateMachine.GetAllStates();
+            // Init with all states since the first character hasn't been read yet
+            var validStates = ExpressionStateMachine.GetAllValidStates();
 
             for (var i = 0; i < expression.Length; i++)
             {
+                var currentChar = expression[i];
+
                 // Check brackets first for possible early return
-                if (BracketsInvalid(bracketStack, expression[i])) return false;
+                if (BracketsInvalid(bracketStack, currentChar)) return false;
 
-                var currentPossibleStates = ExpressionStateMachine.GetStates(expression[i]);
+                // Get all possible states for the current character
+                var currentStates = ExpressionStateMachine.GetStates(currentChar);
 
-                // Check current state validity against previous valid states
-                if (StateInvalid(validNextStates, currentPossibleStates)) return false;
-                // Use the possible states to get a list of all valid states
-                validNextStates = ExpressionStateMachine.GetValidStates(currentPossibleStates);
+                // Get the next valid state, if it exists
+                var nextState = GetNextValidState(validStates, currentStates);
+                if (nextState == ExpressionStateMachine.ExpressionStateEnum.Invalid) return false;
+
+                // Set the collection of valid states for the current state
+                validStates = ExpressionStateMachine.GetStateOutputs(nextState);
             }
 
             // Check to see if all brackets have a matching pair before returning true
             if (bracketStack.Count != 0) return false;
 
-            return validNextStates.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
+            // Check for the Exit state on return in case the expression ends with an invalid state
+            return validStates.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
         }
 
-        private static bool StateInvalid(List<ExpressionStateMachine.ExpressionStateEnum> validStates, List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
+        private static ExpressionStateMachine.ExpressionStateEnum GetNextValidState(List<ExpressionStateMachine.ExpressionStateEnum> validStates, List<ExpressionStateMachine.ExpressionStateEnum> currentStates)
         {
-            // If any of the current states is valid for the previous possible states, continue
-            return !validStates.Intersect(currentStates).Any();
+            var nextStatePossabilities = validStates.Intersect(currentStates).ToList();
+
+            return nextStatePossabilities.Count > 0
+                ? nextStatePossabilities.First()
+                : ExpressionStateMachine.ExpressionStateEnum.Invalid;
         }
 
         private static bool BracketsInvalid(Stack<char> bracketCount, char bracket)
@@ -89,7 +99,8 @@ namespace DSA.Problems.InProgress
             Operator,
             Sign,
             Bracket,
-            Exit
+            Exit,
+            Invalid
         }
 
         public static List<ExpressionStateEnum> GetStates(char c)
@@ -111,7 +122,7 @@ namespace DSA.Problems.InProgress
             return states;
         }
 
-        public static List<ExpressionStateEnum> GetAllStates()
+        public static List<ExpressionStateEnum> GetAllValidStates()
         {
             return new List<ExpressionStateEnum>
             {
@@ -123,43 +134,40 @@ namespace DSA.Problems.InProgress
             };
         }
 
-        public static List<ExpressionStateEnum> GetValidStates(List<ExpressionStateEnum> currentStates)
+        public static List<ExpressionStateEnum> GetStateOutputs(ExpressionStateEnum currentState)
         {
             var possibleStates = new List<ExpressionStateEnum>();
 
-            foreach (var currentState in currentStates)
+            switch (currentState)
             {
-                switch (currentState)
-                {
-                    case ExpressionStateEnum.Numeric:
-                        possibleStates.Add(ExpressionStateEnum.Numeric);
-                        possibleStates.Add(ExpressionStateEnum.Operator);
-                        possibleStates.Add(ExpressionStateEnum.Bracket);
-                        possibleStates.Add(ExpressionStateEnum.Exit);
-                        break;
+                case ExpressionStateEnum.Numeric:
+                    possibleStates.Add(ExpressionStateEnum.Numeric);
+                    possibleStates.Add(ExpressionStateEnum.Operator);
+                    possibleStates.Add(ExpressionStateEnum.Bracket);
+                    possibleStates.Add(ExpressionStateEnum.Exit);
+                    break;
 
-                    case ExpressionStateEnum.Operator:
-                        possibleStates.Add(ExpressionStateEnum.Numeric);
-                        possibleStates.Add(ExpressionStateEnum.Bracket);
-                        possibleStates.Add(ExpressionStateEnum.Sign);
-                        break;
+                case ExpressionStateEnum.Operator:
+                    possibleStates.Add(ExpressionStateEnum.Numeric);
+                    possibleStates.Add(ExpressionStateEnum.Bracket);
+                    possibleStates.Add(ExpressionStateEnum.Sign);
+                    break;
 
-                    case ExpressionStateEnum.Sign:
-                        possibleStates.Add(ExpressionStateEnum.Numeric);
-                        possibleStates.Add(ExpressionStateEnum.Bracket);
-                        break;
+                case ExpressionStateEnum.Sign:
+                    possibleStates.Add(ExpressionStateEnum.Numeric);
+                    possibleStates.Add(ExpressionStateEnum.Bracket);
+                    break;
 
-                    case ExpressionStateEnum.Bracket:
-                        possibleStates.Add(ExpressionStateEnum.Bracket);
-                        possibleStates.Add(ExpressionStateEnum.Numeric);
-                        possibleStates.Add(ExpressionStateEnum.Operator);
-                        possibleStates.Add(ExpressionStateEnum.Sign);
-                        possibleStates.Add(ExpressionStateEnum.Exit);
-                        break;
+                case ExpressionStateEnum.Bracket:
+                    possibleStates.Add(ExpressionStateEnum.Bracket);
+                    possibleStates.Add(ExpressionStateEnum.Numeric);
+                    possibleStates.Add(ExpressionStateEnum.Operator);
+                    possibleStates.Add(ExpressionStateEnum.Sign);
+                    possibleStates.Add(ExpressionStateEnum.Exit);
+                    break;
 
-                    case ExpressionStateEnum.Exit:
-                        break;
-                }
+                case ExpressionStateEnum.Exit:
+                    break;
             }
 
             return possibleStates.Distinct().ToList();
