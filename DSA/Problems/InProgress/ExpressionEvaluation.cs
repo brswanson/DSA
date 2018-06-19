@@ -176,6 +176,77 @@ namespace DSA.Problems.InProgress
     [TestClass]
     public class TestExpressionEvaluation
     {
+        #region  Number
+        [TestMethod]
+        public void Number()
+        {
+            string input = "5"; // Valid, "five"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NumberNumber()
+        {
+            string input = "55"; // Valid, "fifty five"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NumberBracket()
+        {
+            string input = "55(5)"; // Valid, "fifty five times five"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region Operator
+        [TestMethod]
+        public void OperatorsAll()
+        {
+            string input = "1*2/3+5-6"; // Valid, "one times two divided by three plus five minus six"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void OperatorSign()
+        {
+            string input = "1++2"; // Valid, "one plus positive one"
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void OperatorOperatorSign()
+        {
+            string input = "1---2"; // Invalid, "one minus minus negative one"
+            const bool expected = false;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region Bracket
         [TestMethod]
         public void BracketsCountPositive()
         {
@@ -219,22 +290,13 @@ namespace DSA.Problems.InProgress
 
             Assert.AreEqual(expected, actual);
         }
+        #endregion
 
+        #region Sign
         [TestMethod]
-        public void OperatorSign()
+        public void SignsPositive()
         {
-            string input = "1++2"; // Valid, "one plus positive one"
-            const bool expected = true;
-
-            var actual = ExpressionEvaluation.StateMachine(input);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void OperatorOperatorSign()
-        {
-            string input = "1---2"; // Invalid, "one minus minus negative one"
+            string input = "-5"; // Valid, "negative five"
             const bool expected = false;
 
             var actual = ExpressionEvaluation.StateMachine(input);
@@ -243,10 +305,10 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void AllOperators()
+        public void SignsNegative()
         {
-            string input = "1*2/3+5-6"; // Valid, "one times two divided by three plus five minus six"
-            const bool expected = true;
+            string input = "--5"; // Invalid, "negative negative five"
+            const bool expected = false;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
@@ -254,7 +316,33 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void AllTypesPositive()
+        public void SignSignNumber()
+        {
+            string input = "--5"; // Invalid, "minus negative five"
+            const bool expected = false;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region Exit
+        [TestMethod]
+        public void Exit()
+        {
+            string input = ""; // Valid, ""
+            const bool expected = true;
+
+            var actual = ExpressionEvaluation.StateMachine(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region General
+        [TestMethod]
+        public void AllTypes()
         {
             string input = "-(((10/3)*4)+-1)"; // Valid, "negative ten divided by three times four plus negative one"
             const bool expected = true;
@@ -265,16 +353,15 @@ namespace DSA.Problems.InProgress
         }
 
         [TestMethod]
-        public void SignSignNumber()
+        public void AllTypesTwo()
         {
-            string input = "--5"; // Invalid, "minus negative five
-            const bool expected = false;
+            string input = "-5(5*-5+-5)"; // Valid, "negative five times five times negative five plus negative five"
+            const bool expected = true;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
             Assert.AreEqual(expected, actual);
         }
+        #endregion
     }
-
-    // TODO: Add more test cases
 }
