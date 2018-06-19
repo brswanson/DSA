@@ -25,15 +25,14 @@ namespace DSA.Problems.Done
     {
         public static bool StateMachine(string expression)
         {
-            // Time:    O(n).   One pass over the entire string from left to right. Evaluates the current state of the expression and compares it to valid states.
+            // Time:    O(n).   One pass over the entire string from left to right. Evaluates the state of each character against the previous character's valid state transitions.
             // Memory:  O(1).   A constant amount of memory is used to keep track of valid states and bracket counts.
 
             // Treating null and empty string expressions as true
             if (string.IsNullOrEmpty(expression)) return true;
 
             var bracketStack = new Stack<char>();
-            // Init with all states since the first character hasn't been read yet
-            var validStates = ExpressionStateMachine.GetValidStartStates();
+            var validStateTransitions = ExpressionStateMachine.GetStateTransitions();
 
             for (var i = 0; i < expression.Length; i++)
             {
@@ -46,18 +45,18 @@ namespace DSA.Problems.Done
                 var currentStates = ExpressionStateMachine.GetStates(currentChar);
 
                 // Get the next valid state, if it exists
-                var nextState = GetNextValidState(validStates, currentStates);
+                var nextState = GetNextValidState(validStateTransitions, currentStates);
                 if (nextState == ExpressionStateMachine.ExpressionStateEnum.Invalid) return false;
 
-                // Set the collection of valid states for the current state
-                validStates = ExpressionStateMachine.GetStateOutputs(nextState);
+                // Set the collection of valid state transitions for the current state
+                validStateTransitions = ExpressionStateMachine.GetStateTransitions(nextState);
             }
 
             // Check to see if all brackets have a matching pair before returning true
             if (bracketStack.Count != 0) return false;
 
             // Check for the Exit state on return in case the expression ends with an invalid state
-            return validStates.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
+            return validStateTransitions.Contains(ExpressionStateMachine.ExpressionStateEnum.Exit);
         }
 
         private static ExpressionStateMachine.ExpressionStateEnum GetNextValidState(
@@ -96,6 +95,7 @@ namespace DSA.Problems.Done
 
         public enum ExpressionStateEnum
         {
+            Start,
             Numeric,
             Operator,
             Sign,
@@ -123,23 +123,19 @@ namespace DSA.Problems.Done
             return states;
         }
 
-        public static List<ExpressionStateEnum> GetValidStartStates()
-        {
-            return new List<ExpressionStateEnum>
-            {
-                ExpressionStateEnum.Numeric,
-                ExpressionStateEnum.Sign,
-                ExpressionStateEnum.Bracket,
-                ExpressionStateEnum.Exit
-            };
-        }
-
-        public static List<ExpressionStateEnum> GetStateOutputs(ExpressionStateEnum currentState)
+        public static List<ExpressionStateEnum> GetStateTransitions(ExpressionStateEnum state = ExpressionStateEnum.Start)
         {
             var possibleStates = new List<ExpressionStateEnum>();
 
-            switch (currentState)
+            switch (state)
             {
+                case ExpressionStateEnum.Start:
+                    possibleStates.Add(ExpressionStateEnum.Numeric);
+                    possibleStates.Add(ExpressionStateEnum.Sign);
+                    possibleStates.Add(ExpressionStateEnum.Bracket);
+                    possibleStates.Add(ExpressionStateEnum.Exit);
+                    break;
+
                 case ExpressionStateEnum.Numeric:
                     possibleStates.Add(ExpressionStateEnum.Numeric);
                     possibleStates.Add(ExpressionStateEnum.Operator);
@@ -170,7 +166,7 @@ namespace DSA.Problems.Done
                     break;
             }
 
-            return possibleStates.Distinct().ToList();
+            return possibleStates;
         }
     }
 
