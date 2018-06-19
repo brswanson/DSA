@@ -297,7 +297,7 @@ namespace DSA.Problems.InProgress
         public void SignsPositive()
         {
             string input = "-5"; // Valid, "negative five"
-            const bool expected = false;
+            const bool expected = true;
 
             var actual = ExpressionEvaluation.StateMachine(input);
 
