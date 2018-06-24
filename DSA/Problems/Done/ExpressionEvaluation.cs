@@ -34,10 +34,8 @@ namespace DSA.Problems.Done
             var bracketStack = new Stack<char>();
             var validStateTransitions = ExpressionStateMachine.GetStateTransitions();
 
-            for (var i = 0; i < expression.Length; i++)
+            foreach (var currentChar in expression)
             {
-                var currentChar = expression[i];
-
                 // Check brackets first for possible early return
                 if (BracketsInvalid(bracketStack, currentChar)) return false;
 
