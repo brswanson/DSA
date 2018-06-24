@@ -21,7 +21,7 @@ namespace DSA.Problems.Done
         // Time:    O(n). Linear. Worst case, it will iterate over all numbers in the array to find the majority value.
         //                If the numbers are ordered favorably, it may finish faster, but this can't be relied on.
         // Memory:  O(n). Linear. Contains at most one entry in the dictionary for each value in the incoming array.
-        public string DictionaryCount(int[] numbers, int divisor = 2)
+        public static string DictionaryCount(int[] numbers, int divisor = 2)
         {
             if (IsInvalidParams(numbers, divisor)) return NoSolutionMessage;
 
@@ -46,7 +46,7 @@ namespace DSA.Problems.Done
         // Time:    O(n). Linear. Worst case, it will iterate over all numbers in the array to find the majority value.
         //                If the numbers are ordered favorably, it may finish faster, but this can't be relied on.
         // Memory:  O(1). Constant. Only two variables are needed regardless of input: the current most common element, and a count.
-        public string MajorityVote(int[] numbers, int divisor = 2)
+        public static string MajorityVote(int[] numbers, int divisor = 2)
         {
             if (IsInvalidParams(numbers, divisor)) return NoSolutionMessage;
 
@@ -86,22 +86,18 @@ namespace DSA.Problems.Done
         [TestMethod]
         public void DictionaryCount()
         {
-            var majorityElement = new MajorityElement();
-
-            object result = majorityElement.DictionaryCount(new[] { 3, 1, 3, 3, 2 }, 0);
+            string result = MajorityElement.DictionaryCount(new[] { 3, 1, 3, 3, 2 }, 0);
             Console.WriteLine(result); // Should print "3"
-            result = majorityElement.DictionaryCount(new[] { 1, 2, 3 });
+            result = MajorityElement.DictionaryCount(new[] { 1, 2, 3 });
             Console.WriteLine(result); // Should print "NO Majority Element"
         }
 
         [TestMethod]
         public void MajorityVote()
         {
-            var majorityElement = new MajorityElement();
-
-            object result = majorityElement.MajorityVote(new[] { 3, 1, 3, 3, 2 }, 0);
+            string result = MajorityElement.MajorityVote(new[] { 3, 1, 3, 3, 2 }, 0);
             Console.WriteLine(result); // Should print "3"
-            result = majorityElement.MajorityVote(new[] { 1, 2, 3 });
+            result = MajorityElement.MajorityVote(new[] { 1, 2, 3 });
             Console.WriteLine(result); // Should print "NO Majority Element"
         }
     }
