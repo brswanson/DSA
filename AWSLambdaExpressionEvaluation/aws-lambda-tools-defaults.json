@@ -6,16 +6,16 @@
         "dotnet lambda help",
         "All the command line options for the Lambda command can be specified in this file."
     ],
-    "profile"     : "brswanson",
+    "profile"     : "default",
     "region"      : "us-east-2",
     "configuration" : "Debug",
     "framework"     : "netcoreapp2.0",
     "function-runtime" : "dotnetcore2.0",
     "function-memory-size" : 128,
-    "function-timeout"     : 2,
-    "function-handler"     : "AWSLambda::AWSLambda.Function::FunctionHandler",
-    "function-name"        : "ExpressionEvaluationFunction",
-    "function-role"        : "arn:aws:iam::987993155521:role/service-role/dsaRunnerRole",
+    "function-timeout"     : 5,
+    "function-handler"     : "AWSLambdaExpressionEvaluation::AWSLambdaExpressionEvaluation.Function::FunctionHandler",
+    "function-name"        : "ExpressionEvaluation",
+    "function-role"        : "arn:aws:iam::286402004554:role/service-role/dsaFunctionRole",
     "tracing-mode"         : "PassThrough",
     "environment-variables" : ""
 }
