@@ -6,8 +6,8 @@ namespace DSA.Sorting
     {
         public static int[] Recursive(int[] input)
         {
-            // Time:    
-            // Memory:  
+            // Time:    O(nlog(n))  Array is halved log(n) times. Each element in the array is swapped once for a total of n.    
+            // Memory:  O(log(n)).  The same array is used on each recursive call, but because of the recursive implemenation there will be up to log(n) stack frames.
 
             // TODO: Implement this
             return null;
@@ -15,8 +15,8 @@ namespace DSA.Sorting
 
         public static int[] Iterative(int[] input)
         {
-            // Time:    
-            // Memory:  
+            // Time:    O(nlog(n))  Array is halved log(n) times. Each element in the array is swapped once for a total of n.    
+            // Memory:  O(log(n)).  The same array is used during the loop, but an auxilary stack of log(n) entries is needed to keep track of start/end of each array partition.
 
             // TODO: Implement this
             return null;

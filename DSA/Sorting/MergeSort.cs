@@ -7,7 +7,7 @@ namespace DSA.Sorting
     {
         public static int[] Recursive(int[] input)
         {
-            // Time:    O(nlogn).   Arrays are halved on each recursive call, leaving logn total merges. Sorting all the halved arrays takes n time.
+            // Time:    O(nlog(n)).   Arrays are halved on each recursive call, leaving logn total merges. Sorting all the halved arrays takes n time.
             // Memory:  O(n).       New arrays are created and their memory is allocated at each recursive step.
             //                      This additional memory reduces down to linear space in big O notation though.
 
