@@ -90,11 +90,7 @@ namespace DSA.Sorting
 
             var actual = MergeSort.Recursive(input);
 
-            Assert.AreEqual(expected.Length, input.Length);
-            for (var i = 0; i < expected.Length; i++)
-            {
-                Assert.AreEqual(expected[i], actual[i]);
-            }
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -105,11 +101,7 @@ namespace DSA.Sorting
 
             var actual = MergeSort.Iterative(input);
 
-            Assert.AreEqual(expected.Length, input.Length);
-            for (var i = 0; i < expected.Length; i++)
-            {
-                Assert.AreEqual(expected[i], actual[i]);
-            }
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }

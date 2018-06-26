@@ -4,7 +4,7 @@ namespace DSA.Sorting
 {
     public class InsertionSort
     {
-        public static void SortIntegerArrayAscending(int[] input)
+        public static void SortIntegerArrayAscendingInPlace(int[] input)
         {
             // Time:    O(n^2).  Iterates over each integer in the array at least once (n). May also iterate over each integer in the array once for each integer in the array (n).
             // Memory:  O(1).   Sorts in place.
@@ -41,13 +41,9 @@ namespace DSA.Sorting
             var input = new[] { 7, 3, 1, 9, 8, 2, 4, 6, 5, 0 };
             var expected = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            InsertionSort.SortIntegerArrayAscending(input);
+            InsertionSort.SortIntegerArrayAscendingInPlace(input);
 
-            Assert.AreEqual(expected.Length, input.Length);
-            for (var i = 0; i < expected.Length; i++)
-            {
-                Assert.AreEqual(expected[i], input[i]);
-            }
+            CollectionAssert.AreEqual(expected, input);
         }
     }
 }
