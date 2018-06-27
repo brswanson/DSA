@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DSA.Sorting
@@ -14,7 +13,7 @@ namespace DSA.Sorting
             // Edge cases
             if (IsInvalidInput(input)) return input;
 
-            QuickSortRecursive(input, 0, input.Length);
+            QuickSortRecursive(input, 0, input.Length - 1);
 
             return input;
         }
@@ -23,47 +22,42 @@ namespace DSA.Sorting
         {
             if (end == start) return;
 
-            int pivot = GetMedianOfThreeIndex(Tuple.Create(input.First(), 0), Tuple.Create(input[input.Length / 2], input.Length / 2), Tuple.Create(input.Last(), input.Length - 1));
+            int pivot = PartitionGetPivot(input, start, end);
+
+            // Quicksort both partitions
+            QuickSortRecursive(input, start, Math.Max(pivot - 1, 0));
+            QuickSortRecursive(input, Math.Min(pivot + 1, end), end);
+        }
+
+        private static int PartitionGetPivot(int[] input, int low, int high)
+        {
+            // Always taking the right-most value as the pivot
+            int pivot = input[high];
+            // Init the index of the lowest value
+            int lowIndex = (low - 1);
 
             // Sort the array such that:
             //  a) All elements < the pivot appear to the left of the pivot
             //  b) All elements > the pivot appear to the right of the pivot
 
-            // Reading from left to right
-            for (int i = start; i < end; i++)
+            // Read left to right
+            for (int i = low; i < high; i++)
             {
-                var currentNumber = input[i];
-
-                // Anything less than the pivot value can stay in place
-                if (currentNumber < input[pivot])
+                if (input[i] <= pivot)
                 {
-                    if (i < pivot) continue;
+                    // Increment the lowest index; this divides the array between low and high
+                    lowIndex++;
 
-                    Swap(input, i, pivot);
-                }
-
-                // Anything greater than the pivot value changes the desired pivot index
-                if (currentNumber >= input[pivot])
-                {
-                    if (pivot < i) continue;
-
-                    // Choose new pivot index
-                    pivot = i;
+                    // Swap the lowest value with the current value since it's also lower than the pivot
+                    Swap(input, lowIndex, i);
                 }
             }
 
-            int leftStart = start;
-            int leftEnd = Math.Max(pivot - 1, 0);
-            int rightStart = Math.Min(pivot + 1, end);
-            int rightEnd = end;
+            // Swap the pivot with the first value greater than the pivot
+            Swap(input, lowIndex + 1, high);
 
-            // Quicksort both partitions
-            QuickSortRecursive(input, leftStart, leftEnd);
-            QuickSortRecursive(input, rightStart, rightEnd);
+            return lowIndex + 1;
         }
-
-        // Note: It would be faster to compare each value and return the median instead of creating a new array, sorting it, and returning the median. I really like LINQ though
-        private static int GetMedianOfThreeIndex(Tuple<int, int> a, Tuple<int, int> b, Tuple<int, int> c) => new[] { a, b, c }.OrderBy(num => num).Skip(1).First().Item2;
 
         private static void Swap(int[] input, int a, int b)
         {
